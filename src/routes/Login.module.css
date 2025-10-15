@@ -1,6 +1,107 @@
+/* 전체 컨테이너: Flexbox로 중앙 정렬 */
 .container {
-  width: 70%;
-  max-width: 2000px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* "로그인" 타이틀 */
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Form 태그 */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 라벨 + 인풋 그룹 */
+.inputGroup {
+  width: 100%;
+}
+
+/* "이메일", "비밀번호" 라벨 */
+.label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* 인풋과 이메일 접미사를 감싸는 컨테이너 */
+.inputContainer {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding-right: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 컨테이너가 포커스될 때의 스타일 */
+.inputContainer:focus-within {
+  border-color: #3366ff;
+  box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
+}
+
+/* 입력창 */
+.input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: transparent;
+  flex-grow: 1;
+}
+
+/* "@snu.ac.kr" 텍스트 스타일 */
+.emailSuffix {
+  font-size: 1rem;
+  color: black;
+  white-space: nowrap;
+}
+
+/* 로그인 버튼 */
+.loginButton {
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #3366ff;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.loginButton:hover {
+  background-color: #254edb;
+}
+
+/* 회원가입 안내 */
+.signupPrompt {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* "회원가입" 링크 */
+.signupLink {
+  margin-left: 0.5rem;
+  color: #3366ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+.signupLink:hover {
+  text-decoration: underline;
 }
