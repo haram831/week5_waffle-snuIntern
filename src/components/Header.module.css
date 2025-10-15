@@ -1,0 +1,16 @@
+.header {
+  width: 100%;
+  padding: var(--spacing-xl) 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-xxl);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--font-size-xxl);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
