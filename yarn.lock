@@ -770,6 +770,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/axios@npm:^0.14.4":
+  version: 0.14.4
+  resolution: "@types/axios@npm:0.14.4"
+  dependencies:
+    axios: "npm:*"
+  checksum: 10c0/945ef9d9d493b7292d33cf55679af90ffb60fe85475ce79327494480d517e8263f3f0c2f262396a1ada3ef4d66f3b05ea16b1f3c40680aa2b8399c36f6a92dfa
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:1.0.7":
   version: 1.0.7
   resolution: "@types/estree@npm:1.0.7"
@@ -888,7 +897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.12.2":
+"axios@npm:*, axios@npm:^1.12.2":
   version: 1.12.2
   resolution: "axios@npm:1.12.2"
   dependencies:
@@ -2429,6 +2438,7 @@ __metadata:
   resolution: "wafflestudio-2025-fe-seminar-template@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.9.4"
+    "@types/axios": "npm:^0.14.4"
     "@types/node": "npm:^22.15.29"
     "@types/react": "npm:^19.1.2"
     "@types/react-dom": "npm:^19.1.2"
