@@ -13,24 +13,24 @@ const apiClient = axios.create({
   timeout: 5000,
 });
 
-// 회원가입을 요청하는 API 함수
-// export const signup = async ({
-//   name,
-//   email,
-//   password,
-// }: SignUpInfo): Promise<AuthResponse> => {
-//   const response = await apiClient.post<AuthResponse>('/api/auth/user', {
-//     authType: 'APPLICANT',
-//     info: {
-//       type: 'APPLICANT',
-//       name,
-//       email,
-//       password,
-//       successCode: 'string',
-//     },
-//   });
-//   return response.data;
-// };
+//회원가입을 요청하는 API 함수
+export const signup = async ({
+  name,
+  email,
+  password,
+}: SignUpInfo): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>('/api/auth/user', {
+    authType: 'APPLICANT',
+    info: {
+      type: 'APPLICANT',
+      name,
+      email,
+      password,
+      successCode: 'string',
+    },
+  });
+  return response.data;
+};
 
 // 로그인을 요청하는 API 함수
 export const login = async ({
