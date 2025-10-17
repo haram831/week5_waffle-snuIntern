@@ -1,24 +1,27 @@
 .container {
   max-width: 520px;
   margin: 0 auto;
-  padding: var(--spacing-xxl, 32px) var(--spacing-xl, 16px);
-  background: var(--surface, #fff);
-  border: 1px solid var(--border-color, #e5e7eb);
+  padding: 32px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 14px;
-  box-shadow: var(--shadow-md, 0 6px 20px rgba(0,0,0,0.06));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
 .title {
-  margin: 0 0 var(--spacing-xl, 16px);
-  font-size: var(--font-size-xxl, 24px);
+  margin: 0 0 16px;
+  font-size: 24px;
   font-weight: 800;
-  color: var(--text-strong, #111827);
+  color: #111827;
   text-align: center;
 }
 
 .form {
   display: grid;
-  gap: var(--spacing-lg, 14px);
+  gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .field {
@@ -29,20 +32,22 @@
 .input {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--border-color, #e5e7eb);
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
   font-size: 16px;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  background: var(--input-bg, #fff);
+  background: #fff;
+  box-sizing: border-box;
 }
 
 .input:focus {
-  border-color: var(--primary-color, #2563eb);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #2563eb) 24%, transparent);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.24);
 }
 
-.passwordWrapper {
+.passwordWrapper,
+.emailWrapper {
   position: relative;
   display: flex;
   align-items: center;
@@ -52,13 +57,15 @@
 .passwordToggle {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-grid;
   place-items: center;
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid var(--border-color, #e5e7eb);
-  background: var(--bg-soft, #f9fafb);
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.05s ease;
 }
@@ -68,23 +75,18 @@
   background: #f3f4f6;
 }
 
-.emailWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
 .emailWrapper .input {
-  padding-right: 110px; /* 접미사 영역 */
+  padding-right: 110px;
 }
 
-.emailWrapper span,
-.emailSuffix {
+.emailWrapper .emailSuffix {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 13px;
-  color: var(--text-muted, #6b7280);
-  background: var(--bg-soft, #f3f4f6);
+  color: #6b7280;
+  background: #f3f4f6;
   padding: 6px 8px;
   border-radius: 8px;
 }
@@ -92,9 +94,9 @@
 .guide {
   padding: 12px;
   border-radius: 10px;
-  background: color-mix(in srgb, var(--primary-color, #2563eb) 8%, #fff);
-  border: 1px solid color-mix(in srgb, var(--primary-color, #2563eb) 18%, #fff);
-  color: var(--text-color, #1f2937);
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  color: #1f2937;
   font-size: 14px;
 }
 
@@ -105,21 +107,21 @@
 }
 
 .error {
-  margin: 0 0 var(--spacing-md, 12px);
+  margin: 0 0 12px;
   padding: 10px 12px;
-  background: color-mix(in srgb, var(--danger, #ef4444) 12%, #fff);
-  border: 1px solid color-mix(in srgb, var(--danger, #ef4444) 30%, #fff);
-  color: var(--danger, #b91c1c);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #b91c1c;
   border-radius: 10px;
   font-size: 14px;
 }
 
 .success {
-  margin: 0 0 var(--spacing-md, 12px);
+  margin: 0 0 12px;
   padding: 10px 12px;
-  background: color-mix(in srgb, var(--success, #10b981) 12%, #fff);
-  border: 1px solid color-mix(in srgb, var(--success, #10b981) 30%, #fff);
-  color: var(--success, #047857);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #047857;
   border-radius: 10px;
   font-size: 14px;
 }
@@ -129,7 +131,7 @@
   padding: 12px 14px;
   border-radius: 10px;
   border: none;
-  background: var(--primary-color, #2563eb);
+  background: #2563eb;
   color: #fff;
   font-weight: 700;
   font-size: 16px;
@@ -138,7 +140,7 @@
 }
 
 .submit:hover {
-  background: var(--primary-hover, #1d4ed8);
+  background: #1d4ed8;
 }
 
 .submit:disabled {
