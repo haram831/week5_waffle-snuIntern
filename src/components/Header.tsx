@@ -6,7 +6,8 @@ function Header() {
   const navigate = useNavigate();
   const { isLoggedIn, username, logout } = useAuthStore();
 
-  const handleLogout = () => {
+  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
     localStorage.removeItem('authToken');
     logout();
     navigate('/');
@@ -19,17 +20,17 @@ function Header() {
         {isLoggedIn ? (
           <>
             <span>{username}님</span>
-            <button type="button" onClick={handleLogout} className={styles.link}>
+            <Link to="/" onClick={handleLogout} className={styles.link}>
               로그아웃
-            </button>
+            </Link>
           </>
         ) : (
           <>
             <Link to="/login" className={styles.link}>
-              <span>로그인</span>
+              로그인
             </Link>
             <Link to="/signup" className={styles.link}>
-              <span>회원가입</span>
+              회원가입
             </Link>
           </>
         )}
