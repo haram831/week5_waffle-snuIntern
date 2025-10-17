@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStroe';
 import styles from './Header.module.css';
