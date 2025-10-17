@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
-import Header from './Header';
-import useAuthStore from '../store/authStroe';
+import { Outlet } from 'react-router-dom';
 import { getUserInfo } from '../api/auth';
+import useAuthStore from '../store/authStroe';
+import Header from './Header';
 
 function Layout() {
   const { isLoggedIn, login: storeLogin, logout } = useAuthStore();
