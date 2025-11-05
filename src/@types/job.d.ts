@@ -9,11 +9,11 @@ export interface Author {
 }
 
 export interface JobFilter {
-    roles?: string[];
-    isActive?: boolean;
-    domains?: string[];
-    page?: number;
-    order?: 0 | 1;
+  roles?: string[];
+  isActive?: boolean;
+  domains?: string[];
+  page?: number;
+  order?: 0 | 1;
 }
 
 export interface JobInfo {

@@ -1,5 +1,3 @@
 export default function PositionFilter() {
-    return(
-        <div></div>
-    )
+  return <div></div>;
 }
