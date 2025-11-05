@@ -1,13 +1,3 @@
-export interface Tag {
-  tag: string;
-}
-
-export interface Author {
-  id: string;
-  name: string;
-  profileImageKey: string;
-}
-
 export interface JobFilter {
   roles?: string[];
   isActive?: boolean;
