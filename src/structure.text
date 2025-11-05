@@ -1,0 +1,19 @@
+App{
+    Login
+    Signup
+    Home
+    JobContainer{
+        Filter{
+            FilterBar{
+                DomainFilter
+                IsActiveFilter
+                OrderFilter
+            }
+            PositionFilter
+        }
+        JobList{
+            JobCard
+        }
+        Pagination
+    }
+}
