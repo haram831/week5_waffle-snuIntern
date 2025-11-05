@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { JobFilter, JobInfo } from '../@types/job.d.ts';
 import { fetchJobList } from '../api/job.ts';
 import Filter from './Filter';
@@ -8,27 +8,29 @@ import Pagination from './Pagination';
 export default function JobContainer() {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
   const [filters, setFilters] = useState<JobFilter>({});
-  const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
-  const handleFilterChange = (newFilters: JobFilter) => {
+  const handleFilterChange = useCallback((newFilters: JobFilter) => {
     setFilters(newFilters);
-  };
+    setCurrentPage(1);
+  }, []);
 
   useEffect(() => {
     const loadJobs = async () => {
+      const apiPage = currentPage - 1;
       const data = await fetchJobList(
         filters.roles,
         filters.isActive,
         filters.domains,
-        filters.page,
+        apiPage,
         filters.order
       );
       setJobs(data.posts);
-      setPages(data.paginator.lastPage);
+      setTotalPages(data.paginator.lastPage);
     };
     loadJobs();
-  }, [filters]);
+  }, [filters, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -43,9 +45,7 @@ export default function JobContainer() {
       <Filter onFilterChange={handleFilterChange} />
       <JobList />
       <Pagination
-        totalItems={jobs.length}
-        itemPerPage={jobs.length / pages}
-        pageCount={pages}
+        pageCount={totalPages}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />

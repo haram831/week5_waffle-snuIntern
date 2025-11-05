@@ -1,33 +1,21 @@
-import { useEffect, useState } from 'react';
-
 interface Props {
-  totalItems: number;
-  itemPerPage: number;
-  pageCount: number;
-  currentPage: number;
+  pageCount: number; // total number of pages
+  currentPage: number; // current active page
   onPageChange: (page: number) => void;
   prevPageText?: string;
   nextPageText?: string;
 }
 
 export default function Pagination({
-  totalItems,
-  itemPerPage,
   pageCount,
   currentPage,
   onPageChange,
   prevPageText = '<',
   nextPageText = '>',
 }: Props) {
-  const totalPages = Math.ceil(totalItems / itemPerPage);
-  const [start, setStart] = useState(1);
-  const noPrev = start === 1;
-  const noNext = start + pageCount - 1 >= totalPages;
-
-  useEffect(() => {
-    if (currentPage === start + pageCount) setStart((prev) => prev + pageCount);
-    else if (currentPage < start) setStart(Math.max(1, start - pageCount));
-  }, [currentPage, start, pageCount]);
+  const pages = Array.from({ length: pageCount}, (_, i) => i + 1);
+  const noPrev = currentPage === 1;
+  const noNext = currentPage === pageCount;
 
   return (
     <div>
@@ -36,27 +24,25 @@ export default function Pagination({
           {noPrev ? (
             <span>{prevPageText}</span>
           ) : (
-            <button onClick={() => onPageChange(start - 1)}>
+            <button onClick={() => onPageChange(currentPage - 1)}>
               {prevPageText}
             </button>
           )}
         </li>
-        {[...Array(pageCount)].map((_, idx) => (
-          <>
-            {start + idx <= totalPages && (
-              <li key={idx}>
-                <button onClick={() => onPageChange(start + idx)}>
-                  {start + idx}
-                </button>
-              </li>
-            )}
-          </>
+        {pages.map((page) => (
+          page <= pageCount && (
+            <li key={page}>
+              <button onClick={() => onPageChange(page)}>
+                {page}
+              </button>
+            </li>
+          )
         ))}
         <li>
           {noNext ? (
             <span>{nextPageText}</span>
           ) : (
-            <button onClick={() => onPageChange(start + pageCount)}>
+            <button onClick={() => onPageChange(currentPage + 1)}>
               {nextPageText}
             </button>
           )}
