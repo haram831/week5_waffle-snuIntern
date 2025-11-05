@@ -1,6 +1,149 @@
 .container {
-  width: 70%;
-  max-width: 2000px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: 32px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.24);
+}
+
+.passwordWrapper,
+.emailWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eyeButton,
+.passwordToggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.eyeButton:hover,
+.passwordToggle:hover {
+  background: #f3f4f6;
+}
+
+.emailWrapper .input {
+  padding-right: 110px;
+}
+
+.emailWrapper .emailSuffix {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.guide {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.checkList {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #b91c1c;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.success {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #047857;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.submit {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.submit:hover {
+  background: #1d4ed8;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

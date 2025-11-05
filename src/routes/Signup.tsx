@@ -117,9 +117,9 @@ function Signup() {
 
   return (
     <main className={styles.container}>
-      <h1>회원가입</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <h1 className={styles.title}>회원가입</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.field}>
           <label htmlFor="username">이름</label>
           <input
             type="text"
@@ -127,22 +127,24 @@ function Signup() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete="name"
+            className={styles.input}
           />
         </div>
 
-        <div>
+        <div className={styles.field}>
           <label htmlFor="password">비밀번호</label>
-          <div>
+          <div className={styles.passwordWrapper}>
             <input
               type={showPassword ? 'text' : 'password'}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
+              className={styles.input}
             />
             <button
               type="button"
-              className={styles.passwordToggle}
+              className={styles.eyeButton}
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -151,9 +153,9 @@ function Signup() {
         </div>
 
         {showGuide && (
-          <div className="guide">
+          <div className={styles.guide}>
             <div>아래와 같이 비밀번호를 설정하면 더 안전해요!</div>
-            <div className="checkList">
+            <div className={styles.checkList}>
               <div>
                 {passwordChecks.minLength ? (
                   <FaCheckCircle color="green" />
@@ -198,7 +200,8 @@ function Signup() {
           </div>
         )}
 
-        <div>
+        <div className={styles.field}>
+          <label htmlFor="passwordConfirm">비밀번호 확인</label>
           <div className={styles.passwordWrapper}>
             <input
               type={showPasswordConfirm ? 'text' : 'password'}
@@ -206,6 +209,7 @@ function Signup() {
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
               autoComplete="new-password"
+              className={styles.input}
             />
             <button
               type="button"
@@ -217,7 +221,7 @@ function Signup() {
           </div>
         </div>
 
-        <div>
+        <div className={styles.field}>
           <label htmlFor="email">이메일</label>
           <div className={styles.emailWrapper}>
             <input
@@ -226,15 +230,20 @@ function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
+              className={styles.input}
             />
-            <span>@snu.ac.kr</span>
+            <span className={styles.emailSuffix}>@snu.ac.kr</span>
           </div>
         </div>
 
         {errMsg && <p className={styles.error}>{errMsg}</p>}
         {okMsg && <p className={styles.success}>{okMsg}</p>}
 
-        <button type="submit" disabled={!canSubmit || loading}>
+        <button
+          type="submit"
+          disabled={!canSubmit || loading}
+          className={styles.submit}
+        >
           {loading ? '처리 중…' : '회원가입'}
         </button>
       </form>

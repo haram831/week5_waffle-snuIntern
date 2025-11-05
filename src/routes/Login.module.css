@@ -1,107 +1,114 @@
-/* 전체 컨테이너: Flexbox로 중앙 정렬 */
 .container {
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl, 32px) var(--spacing-xl, 16px);
+  background: var(--surface, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md, 0 6px 20px rgba(0, 0, 0, 0.06));
 }
 
-/* "로그인" 타이틀 */
 .title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+  margin: 0 0 var(--spacing-xl, 16px);
+  font-size: var(--font-size-xxl, 24px);
+  font-weight: 800;
+  color: var(--text-strong, #111827);
+  text-align: center;
 }
 
-/* Form 태그 */
 .form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  gap: var(--spacing-lg, 14px);
 }
 
-/* 라벨 + 인풋 그룹 */
 .inputGroup {
-  width: 100%;
+  display: grid;
+  gap: 6px;
 }
 
-/* "이메일", "비밀번호" 라벨 */
 .label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: var(--text-muted, #6b7280);
 }
 
-/* 인풋과 이메일 접미사를 감싸는 컨테이너 */
 .inputContainer {
+  position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding-right: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* 컨테이너가 포커스될 때의 스타일 */
-.inputContainer:focus-within {
-  border-color: #3366ff;
-  box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
-}
-
-/* 입력창 */
 .input {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border: none;
+  padding: 12px 14px;
+  padding-right: 110px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 10px;
+  font-size: 16px;
   outline: none;
-  font-size: 1rem;
-  background-color: transparent;
-  flex-grow: 1;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  background: var(--input-bg, #fff);
 }
 
-/* "@snu.ac.kr" 텍스트 스타일 */
+.input:focus {
+  border-color: var(--primary-color, #2563eb);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--primary-color, #2563eb) 24%, transparent);
+}
+
 .emailSuffix {
-  font-size: 1rem;
-  color: black;
-  white-space: nowrap;
+  position: absolute;
+  right: 10px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+  background: var(--bg-soft, #f3f4f6);
+  border-radius: 8px;
+  pointer-events: none;
 }
 
-/* 로그인 버튼 */
 .loginButton {
   width: 100%;
-  padding: 0.9rem;
-  margin-top: 1rem;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
-  background-color: #3366ff;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
+  background: var(--primary-color, #2563eb);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.2s ease, transform 0.05s ease;
 }
+
 .loginButton:hover {
-  background-color: #254edb;
+  background: var(--primary-hover, #1d4ed8);
 }
 
-/* 회원가입 안내 */
+.loginButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .signupPrompt {
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #888;
+  margin-top: var(--spacing-lg, 14px);
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-muted, #6b7280);
 }
 
-/* "회원가입" 링크 */
 .signupLink {
-  margin-left: 0.5rem;
-  color: #3366ff;
-  font-weight: bold;
+  color: var(--primary-color, #2563eb);
   text-decoration: none;
+  font-weight: 700;
 }
-.signupLink:hover {
-  text-decoration: underline;
+
+.error {
+  margin: 0 0 var(--spacing-md, 12px);
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--danger, #ef4444) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--danger, #ef4444) 30%, #fff);
+  color: var(--danger, #b91c1c);
+  border-radius: 10px;
+  font-size: 14px;
 }
