@@ -11,7 +11,11 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
-export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Props) {
+export default function PositionFilter({
+  Filters,
+  ROLE_MAP,
+  onFilterChange,
+}: Props) {
   const [isRoleFilterClicked, setIsRoleFilterClicked] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState<RoleSelectionMap>(() => {
     const initial: RoleSelectionMap = Object.fromEntries(
@@ -60,16 +64,18 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
         .map(([roleKey, _]) => roleKey)
     );
 
-      onFilterChange({
-        ...Filters,          // 기존 필터 유지
-        roles: selectedRoleKeys,
-        page: undefined,     // 선택적으로 페이지 초기화
-      });
-    };
+    onFilterChange({
+      ...Filters, // 기존 필터 유지
+      roles: selectedRoleKeys,
+      page: undefined, // 선택적으로 페이지 초기화
+    });
+  };
 
   return (
     <>
-      <div onClick={() => setIsRoleFilterClicked(!isRoleFilterClicked)}>직군 필터</div>
+      <div onClick={() => setIsRoleFilterClicked(!isRoleFilterClicked)}>
+        직군 필터
+      </div>
       {isRoleFilterClicked && (
         <div>
           {Object.entries(ROLE_MAP).map(([categoryKey, category]) => (
@@ -81,13 +87,15 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
                     type="checkbox"
                     value={roleKey}
                     checked={
-                      !!selectedRoles?.[categoryKey as keyof RoleSelectionMap]?.roles?.[roleKey as string]
+                      !!selectedRoles?.[categoryKey as keyof RoleSelectionMap]
+                        ?.roles?.[roleKey as string]
                     }
                     onChange={(e) => {
                       const checked = e.target.checked;
 
                       setSelectedRoles((prev) => {
-                        const categoryId = categoryKey as keyof RoleSelectionMap;
+                        const categoryId =
+                          categoryKey as keyof RoleSelectionMap;
                         const roleId = roleKey as keyof typeof category.roles;
 
                         // 이전 카테고리 상태 복사
@@ -115,20 +123,31 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
               ))}
             </div>
           ))}
-          <button onClick={() => setSelectedRoles(() => {
-            const reset: RoleSelectionMap = Object.fromEntries(
-              Object.entries(ROLE_MAP).map(([categoryKey, categoryValue]) => [
-                categoryKey,
-                {
-                  name: categoryValue.name,
-                  roles: Object.fromEntries(
-                    Object.keys(categoryValue.roles).map((roleKey) => [roleKey, false])
-                  ) as Record<keyof typeof categoryValue.roles, boolean>,
-                },
-              ])
-            )as RoleSelectionMap;
-            return reset;
-          })}>초기화</button>
+          <button
+            onClick={() =>
+              setSelectedRoles(() => {
+                const reset: RoleSelectionMap = Object.fromEntries(
+                  Object.entries(ROLE_MAP).map(
+                    ([categoryKey, categoryValue]) => [
+                      categoryKey,
+                      {
+                        name: categoryValue.name,
+                        roles: Object.fromEntries(
+                          Object.keys(categoryValue.roles).map((roleKey) => [
+                            roleKey,
+                            false,
+                          ])
+                        ) as Record<keyof typeof categoryValue.roles, boolean>,
+                      },
+                    ]
+                  )
+                ) as RoleSelectionMap;
+                return reset;
+              })
+            }
+          >
+            초기화
+          </button>
           <button onClick={handleApply}>적용</button>
         </div>
       )}
