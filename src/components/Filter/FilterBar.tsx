@@ -7,7 +7,11 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
-export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props) {
+export default function FilterBar({
+  Filters,
+  DOMAIN_MAP,
+  onFilterChange,
+}: Props) {
   const [selectedStatus, setSelectedStatus] = useState<JobFilter>(Filters);
 
   useEffect(() => {
@@ -30,7 +34,10 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               <input
                 type="radio"
                 value="isActive"
-                checked={selectedStatus.isActive === true || selectedStatus.isActive === false}
+                checked={
+                  selectedStatus.isActive === true ||
+                  selectedStatus.isActive === false
+                }
                 onChange={() =>
                   setSelectedStatus({ ...selectedStatus, isActive: false })
                 }
@@ -50,78 +57,95 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
             </label>
           </div>
 
-          <button onClick={() => setSelectedStatus({
-            roles: [...selectedStatus.roles || []],
-            isActive: undefined,
-            domains: [...selectedStatus.domains || []],
-            page: selectedStatus.page,
-            order: 0,
-          })}>초기화</button>
+          <button
+            onClick={() =>
+              setSelectedStatus({
+                roles: [...(selectedStatus.roles || [])],
+                isActive: undefined,
+                domains: [...(selectedStatus.domains || [])],
+                page: selectedStatus.page,
+                order: 0,
+              })
+            }
+          >
+            초기화
+          </button>
           <button onClick={() => onFilterChange(selectedStatus)}>적용</button>
         </>
       )}
-
 
       <div onClick={() => setIsDomainClicked(true)}>
         <p>업종</p>
       </div>
       {isDomainClicked && (
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            value="domains"
-            checked={Object.keys(DOMAIN_MAP).every((domain) =>
-              selectedStatus.domains?.includes(domain)
-            )}
-            onChange={(e) => {
-              if (e.target.checked) {
-                setSelectedStatus({ ...selectedStatus, domains: Object.keys(DOMAIN_MAP) });
-              } else {
-                setSelectedStatus({ ...selectedStatus, domains: [] });
-              }
-            }}
-          />
-          전체
-        </label>
-        {Object.entries(DOMAIN_MAP).map(([domainKey, domainValue]) => (
-          <label key={domainKey}>
+        <div>
+          <label>
             <input
               type="checkbox"
-              value={domainKey}
-              checked={selectedStatus.domains?.includes(domainKey)}
+              value="domains"
+              checked={Object.keys(DOMAIN_MAP).every((domain) =>
+                selectedStatus.domains?.includes(domain)
+              )}
               onChange={(e) => {
                 if (e.target.checked) {
                   setSelectedStatus({
                     ...selectedStatus,
-                    domains: [...(selectedStatus.domains || []), domainKey],
+                    domains: Object.keys(DOMAIN_MAP),
                   });
                 } else {
-                  setSelectedStatus({
-                    ...selectedStatus,
-                    domains: selectedStatus.domains?.filter(
-                      (domain) => domain !== domainKey
-                    ),
-                  });
+                  setSelectedStatus({ ...selectedStatus, domains: [] });
                 }
               }}
             />
-            {domainValue}
+            전체
           </label>
-        ))}
-        <button onClick={() => setSelectedStatus({
-          roles: [selectedStatus.roles || []].flat(),
-          isActive: false,
-          domains: [...Object.keys(DOMAIN_MAP)],
-          page: undefined,
-          order: 0,
-        })}>초기화</button>
-        <button onClick={() => {
-          onFilterChange(selectedStatus);
-        }}>적용</button>
-      </div>
+          {Object.entries(DOMAIN_MAP).map(([domainKey, domainValue]) => (
+            <label key={domainKey}>
+              <input
+                type="checkbox"
+                value={domainKey}
+                checked={selectedStatus.domains?.includes(domainKey)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedStatus({
+                      ...selectedStatus,
+                      domains: [...(selectedStatus.domains || []), domainKey],
+                    });
+                  } else {
+                    setSelectedStatus({
+                      ...selectedStatus,
+                      domains: selectedStatus.domains?.filter(
+                        (domain) => domain !== domainKey
+                      ),
+                    });
+                  }
+                }}
+              />
+              {domainValue}
+            </label>
+          ))}
+          <button
+            onClick={() =>
+              setSelectedStatus({
+                roles: [selectedStatus.roles || []].flat(),
+                isActive: false,
+                domains: [...Object.keys(DOMAIN_MAP)],
+                page: undefined,
+                order: 0,
+              })
+            }
+          >
+            초기화
+          </button>
+          <button
+            onClick={() => {
+              onFilterChange(selectedStatus);
+            }}
+          >
+            적용
+          </button>
+        </div>
       )}
-
 
       <div onClick={() => setIsLatestClicked(true)}>
         <p>최신순</p>
@@ -129,11 +153,13 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
       {isLatestClicked && (
         <div>
           <label>
-            <input 
+            <input
               type="radio"
               value="latest"
               checked={selectedStatus.order === 0}
-              onChange={() => setSelectedStatus({ ...selectedStatus, order: 0 })}
+              onChange={() =>
+                setSelectedStatus({ ...selectedStatus, order: 0 })
+              }
             />
             공고등록순
           </label>
@@ -142,20 +168,32 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               type="radio"
               value="oldest"
               checked={selectedStatus.order === 1}
-              onChange={() => setSelectedStatus({ ...selectedStatus, order: 1 })}
+              onChange={() =>
+                setSelectedStatus({ ...selectedStatus, order: 1 })
+              }
             />
             마감임박순
           </label>
-            <button onClick={() => setSelectedStatus({
-            roles: [selectedStatus.roles || []].flat(),
-            isActive: false,
-            domains: [...Object.keys(DOMAIN_MAP)],
-            page: undefined,
-            order: 0,
-          })}>초기화</button>
-          <button onClick={() => {
-            onFilterChange(selectedStatus);
-          }}>적용</button>
+          <button
+            onClick={() =>
+              setSelectedStatus({
+                roles: [selectedStatus.roles || []].flat(),
+                isActive: false,
+                domains: [...Object.keys(DOMAIN_MAP)],
+                page: undefined,
+                order: 0,
+              })
+            }
+          >
+            초기화
+          </button>
+          <button
+            onClick={() => {
+              onFilterChange(selectedStatus);
+            }}
+          >
+            적용
+          </button>
         </div>
       )}
     </div>

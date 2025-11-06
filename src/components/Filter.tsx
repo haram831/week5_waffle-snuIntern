@@ -9,11 +9,24 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
-export default function Filter({ Filters, ROLE_MAP, DOMAIN_MAP, onFilterChange }: Props) {
+export default function Filter({
+  Filters,
+  ROLE_MAP,
+  DOMAIN_MAP,
+  onFilterChange,
+}: Props) {
   return (
     <div>
-      <FilterBar Filters={Filters} DOMAIN_MAP={DOMAIN_MAP} onFilterChange={onFilterChange} />
-      <PositionFilter Filters={Filters} ROLE_MAP={ROLE_MAP} onFilterChange={onFilterChange} />
+      <FilterBar
+        Filters={Filters}
+        DOMAIN_MAP={DOMAIN_MAP}
+        onFilterChange={onFilterChange}
+      />
+      <PositionFilter
+        Filters={Filters}
+        ROLE_MAP={ROLE_MAP}
+        onFilterChange={onFilterChange}
+      />
     </div>
   );
 }

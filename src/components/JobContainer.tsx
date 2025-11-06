@@ -24,31 +24,31 @@ export default function JobContainer() {
 
   const ROLE_MAP = {
     DEVELOPMENT: {
-      name: "개발",
+      name: '개발',
       roles: {
-        FRONT: "프론트엔드 개발",
-        BACKEND: "서버·백엔드 개발",
-        APP: "앱 개발",
-        DATA: "데이터",
-        OTHERS: "기타 분야",
+        FRONT: '프론트엔드 개발',
+        BACKEND: '서버·백엔드 개발',
+        APP: '앱 개발',
+        DATA: '데이터',
+        OTHERS: '기타 분야',
       },
     },
     DESIGN: {
-      name: "디자인",
+      name: '디자인',
       roles: {
-        DESIGN: "디자인",
+        DESIGN: '디자인',
       },
     },
     PLANNING: {
-      name: "기획",
+      name: '기획',
       roles: {
-        PLANNER: "기획",
+        PLANNER: '기획',
       },
     },
     MARKETING: {
-      name: "마케팅",
+      name: '마케팅',
       roles: {
-        MARKETING: "마케팅",
+        MARKETING: '마케팅',
       },
     },
   } as const;
@@ -84,7 +84,12 @@ export default function JobContainer() {
         <h1>공고 목록 데이터 확인용</h1>
         <pre>{JSON.stringify(jobs, null, 2)}</pre>
       </div>
-      <Filter Filters={filters} ROLE_MAP={ROLE_MAP} DOMAIN_MAP={DOMAIN_MAP} onFilterChange={handleFilterChange} />
+      <Filter
+        Filters={filters}
+        ROLE_MAP={ROLE_MAP}
+        DOMAIN_MAP={DOMAIN_MAP}
+        onFilterChange={handleFilterChange}
+      />
       <JobList />
       <Pagination
         pageCount={totalPages}

@@ -33,7 +33,6 @@ export interface JobListResponse {
   };
 }
 
-
 export interface RoleGroup {
   name: string;
   roles: Record<string, string>;
