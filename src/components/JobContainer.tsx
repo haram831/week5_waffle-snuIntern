@@ -19,6 +19,7 @@ export default function JobContainer() {
     FOODTECH: '푸드테크',
     MOBILITY: '모빌리티',
     CONTENTS: '컨텐츠',
+    B2B: 'B2B',
     OTHERS: '기타',
   };
 
