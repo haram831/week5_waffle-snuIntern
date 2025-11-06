@@ -33,12 +33,12 @@ export interface JobListResponse {
   };
 }
 
-export interface RoleGroup {
+interface RoleGroup {
   name: string;
   roles: Record<string, string>;
 }
 
-export type RoleCategory = 'DEVELOPMENT' | 'DESIGN' | 'PLANNING' | 'MARKETING';
+type RoleCategory = 'DEVELOPMENT' | 'DESIGN' | 'PLANNING' | 'MARKETING';
 
 export type RoleMapType = Record<RoleCategory, RoleGroup>;
 
