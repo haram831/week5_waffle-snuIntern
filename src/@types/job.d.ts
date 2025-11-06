@@ -32,3 +32,19 @@ export interface JobListResponse {
     lastPage: number;
   };
 }
+
+interface RoleGroup {
+  name: string;
+  roles: Record<string, string>;
+}
+
+type RoleCategory = 'DEVELOPMENT' | 'DESIGN' | 'PLANNING' | 'MARKETING';
+
+export type RoleMapType = Record<RoleCategory, RoleGroup>;
+
+export type RoleSelectionMap = {
+  [K in keyof RoleMapType]: {
+    name: string;
+    roles: Record<keyof RoleMapType[K]['roles'], boolean>;
+  };
+};
