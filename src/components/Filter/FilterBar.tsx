@@ -47,121 +47,117 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
 
   return (
     <div className={styles.wrap} ref={rootRef}>
-      <div className={styles.row}>
-        <div className={styles.triggerGroup}>
-          <div className={styles.triggerWrap}>
-            <button
-              className={styles.trigger}
-              data-active={draft.isActive !== undefined}
-              onClick={() => setMenu(m => (m === 'status' ? null : 'status'))}
-            >
-              모집상태 ▾
-            </button>
-            {menu === 'status' && (
-              <div className={styles.menu}>
-                <button
-                  className={styles.menuItem}
-                  data-selected={draft.isActive === undefined}
-                  onClick={() => setDraft(prev => ({ ...prev, isActive: undefined }))}
-                >
-                  전체
-                </button>
-                <button
-                  className={styles.menuItem}
-                  data-selected={draft.isActive === true}
-                  onClick={() => setDraft(prev => ({ ...prev, isActive: true }))}
-                >
-                  모집중
-                </button>
-                <div className={styles.menuFooter}>
-                  <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, isActive: undefined }))}>초기화</button>
-                  <button className={styles.primary} onClick={apply}>적용</button>
-                </div>
+      <div className={styles.pillRow}>
+        <div className={styles.triggerWrap}>
+          <button
+            className={styles.trigger}
+            data-active={draft.isActive !== undefined}
+            onClick={() => setMenu(m => (m === 'status' ? null : 'status'))}
+          >
+            모집상태 ▾
+          </button>
+          {menu === 'status' && (
+            <div className={styles.menu}>
+              <button
+                className={styles.menuItem}
+                data-selected={draft.isActive === undefined}
+                onClick={() => setDraft(prev => ({ ...prev, isActive: undefined }))}
+              >
+                전체
+              </button>
+              <button
+                className={styles.menuItem}
+                data-selected={draft.isActive === true}
+                onClick={() => setDraft(prev => ({ ...prev, isActive: true }))}
+              >
+                모집중
+              </button>
+              <div className={styles.menuFooter}>
+                <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, isActive: undefined }))}>초기화</button>
+                <button className={styles.primary} onClick={apply}>적용</button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+        </div>
 
-          <div className={styles.triggerWrap}>
-            <button
-              className={styles.trigger}
-              data-active={(draft.domains?.length ?? 0) > 0}
-              onClick={() => setMenu(m => (m === 'domain' ? null : 'domain'))}
-            >
-              업종 ▾
-            </button>
-            {menu === 'domain' && (
-              <div className={styles.menuWide}>
-                <label className={styles.checkItem}>
-                  <input
-                    type="checkbox"
-                    checked={Object.keys(DOMAIN_MAP).every(k => draft.domains?.includes(k))}
-                    onChange={e =>
-                      setDraft(prev => ({
-                        ...prev,
-                        domains: e.target.checked ? Object.keys(DOMAIN_MAP) : []
-                      }))
-                    }
-                  />
-                  전체
-                </label>
-                <div className={styles.grid}>
-                  {Object.entries(DOMAIN_MAP).map(([k, v]) => (
-                    <label key={k} className={styles.checkItem}>
-                      <input
-                        type="checkbox"
-                        checked={!!draft.domains?.includes(k)}
-                        onChange={() => toggleDomain(k)}
-                      />
-                      {v}
-                    </label>
-                  ))}
-                </div>
-                <div className={styles.menuFooter}>
-                  <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, domains: [] }))}>초기화</button>
-                  <button className={styles.primary} onClick={apply}>적용</button>
-                </div>
+        <div className={styles.triggerWrap}>
+          <button
+            className={styles.trigger}
+            data-active={(draft.domains?.length ?? 0) > 0}
+            onClick={() => setMenu(m => (m === 'domain' ? null : 'domain'))}
+          >
+            업종 ▾
+          </button>
+          {menu === 'domain' && (
+            <div className={styles.menuWide}>
+              <label className={styles.checkItem}>
+                <input
+                  type="checkbox"
+                  checked={Object.keys(DOMAIN_MAP).every(k => draft.domains?.includes(k))}
+                  onChange={e =>
+                    setDraft(prev => ({
+                      ...prev,
+                      domains: e.target.checked ? Object.keys(DOMAIN_MAP) : []
+                    }))
+                  }
+                />
+                전체
+              </label>
+              <div className={styles.grid}>
+                {Object.entries(DOMAIN_MAP).map(([k, v]) => (
+                  <label key={k} className={styles.checkItem}>
+                    <input
+                      type="checkbox"
+                      checked={!!draft.domains?.includes(k)}
+                      onChange={() => toggleDomain(k)}
+                    />
+                    {v}
+                  </label>
+                ))}
               </div>
-            )}
-          </div>
+              <div className={styles.menuFooter}>
+                <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, domains: [] }))}>초기화</button>
+                <button className={styles.primary} onClick={apply}>적용</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className={styles.row}>
-        <div className={styles.triggerGroup}>
-          <div className={styles.triggerWrap}>
-            <button
-              className={styles.trigger}
-              data-active={draft.order === 1}
-              onClick={() => setMenu(m => (m === 'order' ? null : 'order'))}
-            >
-              최신순 ▾
-            </button>
-            {menu === 'order' && (
-              <div className={styles.menu}>
-                <button
-                  className={styles.menuItem}
-                  data-selected={draft.order !== 1}
-                  onClick={() => setDraft(prev => ({ ...prev, order: 0 }))}
-                >
-                  공고등록순
-                </button>
-                <button
-                  className={styles.menuItem}
-                  data-selected={draft.order === 1}
-                  onClick={() => setDraft(prev => ({ ...prev, order: 1 }))}
-                >
-                  마감임박순
-                </button>
-                <div className={styles.menuFooter}>
-                  <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, order: 0 }))}>초기화</button>
-                  <button className={styles.primary} onClick={apply}>적용</button>
-                </div>
+      <div className={styles.pillRow}>
+        <div className={styles.triggerWrap}>
+          <button
+            className={styles.trigger}
+            data-active={draft.order === 1}
+            onClick={() => setMenu(m => (m === 'order' ? null : 'order'))}
+          >
+            최신순 ▾
+          </button>
+          {menu === 'order' && (
+            <div className={styles.menu}>
+              <button
+                className={styles.menuItem}
+                data-selected={draft.order !== 1}
+                onClick={() => setDraft(prev => ({ ...prev, order: 0 }))}
+              >
+                공고등록순
+              </button>
+              <button
+                className={styles.menuItem}
+                data-selected={draft.order === 1}
+                onClick={() => setDraft(prev => ({ ...prev, order: 1 }))}
+              >
+                마감임박순
+              </button>
+              <div className={styles.menuFooter}>
+                <button className={styles.secondary} onClick={() => setDraft(prev => ({ ...prev, order: 0 }))}>초기화</button>
+                <button className={styles.primary} onClick={apply}>적용</button>
               </div>
-            )}
-          </div>
-
-          <button className={styles.resetInline} onClick={resetAll}>⟳ 초기화</button>
+            </div>
+          )}
         </div>
+
+        <button className={styles.resetInline} onClick={resetAll}>⟳ 초기화</button>
       </div>
     </div>
   );
