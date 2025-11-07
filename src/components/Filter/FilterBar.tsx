@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { JobFilter } from '../../@types/job';
+import styles from './FilterBar.module.css';
 
 interface Props {
   Filters: JobFilter;
@@ -7,195 +8,79 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
-export default function FilterBar({
-  Filters,
-  DOMAIN_MAP,
-  onFilterChange,
-}: Props) {
-  const [selectedStatus, setSelectedStatus] = useState<JobFilter>(Filters);
+export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props) {
+  const [selected, setSelected] = useState<JobFilter>(Filters);
 
-  useEffect(() => {
-    setSelectedStatus(Filters);
-  }, [Filters]);
+  const setIsActive = (v: boolean | undefined) =>
+    setSelected(prev => ({ ...prev, isActive: v }));
 
-  const [isActiveClicked, setIsActiveClicked] = useState(false);
-  const [isDomainClicked, setIsDomainClicked] = useState(false);
-  const [isLatestClicked, setIsLatestClicked] = useState(false);
+  const setOrder = (v: 0 | 1) =>
+    setSelected(prev => ({ ...prev, order: v }));
+
+  const toggleDomain = (key: string) =>
+    setSelected(prev => {
+      const domains = new Set(prev.domains ?? []);
+      domains.has(key) ? domains.delete(key) : domains.add(key);
+      return { ...prev, domains: Array.from(domains) };
+    });
+
+  const reset = () => setSelected({});
+
+  const apply = () => onFilterChange(selected);
 
   return (
-    <div>
-      <div onClick={() => setIsActiveClicked(true)}>
-        <p>모집 상태</p>
+    <div className={styles.container}>
+      <div className={styles.leftGroup}>
+        <span className={styles.sectionTitle}>모집 상태</span>
+        <button
+          className={`${styles.filterButton} ${selected.isActive ? '' : styles.active}`}
+          onClick={() => setIsActive(undefined)}
+        >
+          전체
+        </button>
+        <button
+          className={`${styles.filterButton} ${selected.isActive ? styles.active : ''}`}
+          onClick={() => setIsActive(true)}
+        >
+          모집중
+        </button>
       </div>
-      {isActiveClicked && (
-        <>
-          <div>
-            <label>
-              <input
-                type="radio"
-                value="isActive"
-                checked={
-                  selectedStatus.isActive === true ||
-                  selectedStatus.isActive === false
-                }
-                onChange={() =>
-                  setSelectedStatus({ ...selectedStatus, isActive: false })
-                }
-              />
-              전체
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="isActive"
-                checked={selectedStatus.isActive === undefined}
-                onChange={() =>
-                  setSelectedStatus({ ...selectedStatus, isActive: true })
-                }
-              />
-              모집중
-            </label>
-          </div>
 
-          <button
-            onClick={() =>
-              setSelectedStatus({
-                roles: [...(selectedStatus.roles || [])],
-                isActive: undefined,
-                domains: [...(selectedStatus.domains || [])],
-                page: selectedStatus.page,
-                order: 0,
-              })
-            }
-          >
-            초기화
-          </button>
-          <button onClick={() => onFilterChange(selectedStatus)}>적용</button>
-        </>
-      )}
-
-      <div onClick={() => setIsDomainClicked(true)}>
-        <p>업종</p>
-      </div>
-      {isDomainClicked && (
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              value="domains"
-              checked={Object.keys(DOMAIN_MAP).every((domain) =>
-                selectedStatus.domains?.includes(domain)
-              )}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedStatus({
-                    ...selectedStatus,
-                    domains: Object.keys(DOMAIN_MAP),
-                  });
-                } else {
-                  setSelectedStatus({ ...selectedStatus, domains: [] });
-                }
-              }}
-            />
-            전체
-          </label>
-          {Object.entries(DOMAIN_MAP).map(([domainKey, domainValue]) => (
-            <label key={domainKey}>
-              <input
-                type="checkbox"
-                value={domainKey}
-                checked={selectedStatus.domains?.includes(domainKey)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedStatus({
-                      ...selectedStatus,
-                      domains: [...(selectedStatus.domains || []), domainKey],
-                    });
-                  } else {
-                    setSelectedStatus({
-                      ...selectedStatus,
-                      domains: selectedStatus.domains?.filter(
-                        (domain) => domain !== domainKey
-                      ),
-                    });
-                  }
-                }}
-              />
-              {domainValue}
-            </label>
+      <div className={styles.leftGroup}>
+        <span className={styles.sectionTitle}>업종</span>
+        <div className={styles.chipGroup}>
+          {Object.entries(DOMAIN_MAP).map(([key, label]) => (
+            <button
+              key={key}
+              className={`${styles.filterButton} ${(selected.domains ?? []).includes(key) ? styles.active : ''}`}
+              onClick={() => toggleDomain(key)}
+            >
+              {label}
+            </button>
           ))}
-          <button
-            onClick={() =>
-              setSelectedStatus({
-                roles: [selectedStatus.roles || []].flat(),
-                isActive: false,
-                domains: [...Object.keys(DOMAIN_MAP)],
-                page: undefined,
-                order: 0,
-              })
-            }
-          >
-            초기화
-          </button>
-          <button
-            onClick={() => {
-              onFilterChange(selectedStatus);
-            }}
-          >
-            적용
-          </button>
         </div>
-      )}
-
-      <div onClick={() => setIsLatestClicked(true)}>
-        <p>최신순</p>
       </div>
-      {isLatestClicked && (
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="latest"
-              checked={selectedStatus.order === 0}
-              onChange={() =>
-                setSelectedStatus({ ...selectedStatus, order: 0 })
-              }
-            />
-            공고등록순
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="oldest"
-              checked={selectedStatus.order === 1}
-              onChange={() =>
-                setSelectedStatus({ ...selectedStatus, order: 1 })
-              }
-            />
-            마감임박순
-          </label>
-          <button
-            onClick={() =>
-              setSelectedStatus({
-                roles: [selectedStatus.roles || []].flat(),
-                isActive: false,
-                domains: [...Object.keys(DOMAIN_MAP)],
-                page: undefined,
-                order: 0,
-              })
-            }
-          >
-            초기화
-          </button>
-          <button
-            onClick={() => {
-              onFilterChange(selectedStatus);
-            }}
-          >
-            적용
-          </button>
-        </div>
-      )}
+
+      <div className={styles.leftGroup}>
+        <span className={styles.sectionTitle}>정렬</span>
+        <button
+          className={`${styles.filterButton} ${selected.order !== 1 ? styles.active : ''}`}
+          onClick={() => setOrder(0)}
+        >
+          공고등록순
+        </button>
+        <button
+          className={`${styles.filterButton} ${selected.order === 1 ? styles.active : ''}`}
+          onClick={() => setOrder(1)}
+        >
+          마감임박순
+        </button>
+      </div>
+
+      <div className={styles.footer}>
+        <button className={styles.resetButton} onClick={reset}>초기화</button>
+        <button className={styles.applyButton} onClick={apply}>적용</button>
+      </div>
     </div>
   );
 }
