@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { JobFilter, RoleMapType } from '../../@types/job';
 import styles from './PositionFilter.module.css';
 
