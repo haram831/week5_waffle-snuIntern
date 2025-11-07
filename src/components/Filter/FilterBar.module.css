@@ -1,6 +1,7 @@
 .wrap {
   display: grid;
   gap: 12px;
+  position: relative;
 }
 
 .headerRow {
@@ -37,6 +38,10 @@
   flex-wrap: wrap;
 }
 
+.triggerWrap {
+  position: relative;
+}
+
 .trigger {
   padding: 8px 12px;
   border-radius: 10px;
@@ -60,7 +65,9 @@
 }
 
 .menu {
-  margin-top: 8px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
   width: 260px;
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -68,22 +75,23 @@
   padding: 8px;
   display: grid;
   gap: 6px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  z-index: 20;
 }
 
 .menuWide {
-  margin-top: 8px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 360px;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 10px;
   display: grid;
   gap: 10px;
-}
-
-.menuRow {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  z-index: 20;
 }
 
 .menuItem {
