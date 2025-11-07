@@ -39,7 +39,7 @@ const positionTypeMap: { [key: string]: string } = {
 function JobCard({ job, onToggleBookmark }: JobCardProps) {
   const { isLoggedIn } = useAuthStore();
   const { openLoginModal } = useModalStore();
-  
+
   if (!job) return null;
 
   const isBookmarkedToShow = isLoggedIn ? job.isBookmarked : false;
@@ -66,7 +66,6 @@ function JobCard({ job, onToggleBookmark }: JobCardProps) {
   };
 
   const deadlineText = getDeadlineText(job.employmentEndDate);
-
 
   // 북마크 클릭 핸들러
   const handleBookmarkClick = (e: React.MouseEvent) => {

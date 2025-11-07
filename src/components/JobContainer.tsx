@@ -88,7 +88,10 @@ export default function JobContainer() {
   };
 
   // 북마크 토글 핸들러
-  const handleBookmarkToggle = async (postId: string, isBookmarked: boolean) => {
+  const handleBookmarkToggle = async (
+    postId: string,
+    isBookmarked: boolean
+  ) => {
     try {
       if (isBookmarked) {
         // 찜하기 해제 API 호출

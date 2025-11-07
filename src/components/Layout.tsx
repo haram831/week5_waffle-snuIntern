@@ -30,7 +30,7 @@ function Layout() {
     <>
       <Header />
       <Outlet />
-      
+
       {/* 로그인 모달 렌더링 */}
       {isLoginModalOpen && <LoginModal />}
     </>
