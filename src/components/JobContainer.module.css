@@ -1,0 +1,9 @@
+/* 아직 미완성 */
+.joblist {
+  max-width: 1200px;
+  padding: var(--spacing-xl);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 350px);
+  gap: var(--spacing-xl);
+  justify-content: center;
+}

@@ -1,0 +1,166 @@
+.jobCard {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.jobCard:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.jobCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jobCardCompanyInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.jobCardLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: contain;
+  border: 1px solid #f0f0f0;
+  background-color: #f0f0f0;
+}
+
+.jobCardCompanyName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.jobCardBookmark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #aaa;
+  transition: color 0.2s ease, transform 0.1s ease;
+  padding: 4px;
+  margin: -4px;
+}
+
+.jobCardBookmark:hover {
+  color: #555;
+  transform: scale(1.15);
+}
+
+.jobCardBookmark:active {
+  transform: scale(1.0);
+}
+
+.jobCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.jobCardPositionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  line-height: 1.4;
+  min-height: 2.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.jobCardDomain {
+  align-self: flex-start;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.jobCardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.jobCardPositionType {
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+.jobCardDeadline {
+  font-weight: 500;
+  color: #e53e3e;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+.jobCardDetailSummary {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.5;
+  min-height: 3em;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.jobCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+  gap: 12px;
+}
+
+.jobCardTags {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  max-height: 30px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.jobCardTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: #e6f7ff;
+  color: #096dd9;
+  font-weight: 500;
+  white-space: nowrap;
+}

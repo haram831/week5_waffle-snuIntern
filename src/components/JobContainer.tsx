@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { JobFilter, JobInfo } from '../@types/job.d.ts';
+import { addBookmark, removeBookmark } from '../api/bookmark.ts';
 import { fetchJobList } from '../api/job.ts';
 import Filter from './Filter';
-import JobList from './Job/JobList';
+import JobCard from './Job/JobCard.tsx';
+import styles from './JobContainer.module.css';
 import Pagination from './Pagination';
 
 export default function JobContainer() {
@@ -52,6 +54,12 @@ export default function JobContainer() {
         MARKETING: '마케팅',
       },
     },
+    HUMANRESOURCE: {
+      name: '인사/HR',
+      roles: {
+        HUMANRESOURCE: '인사/HR',
+      },
+    },
   } as const;
 
   const handleFilterChange = useCallback((newFilters: JobFilter) => {
@@ -79,19 +87,51 @@ export default function JobContainer() {
     setCurrentPage(page);
   };
 
+  // 북마크 토글 핸들러
+  const handleBookmarkToggle = async (postId: string, isBookmarked: boolean) => {
+    try {
+      if (isBookmarked) {
+        // 찜하기 해제 API 호출
+        await removeBookmark(postId);
+      } else {
+        // 찜하기 API 호출
+        await addBookmark(postId);
+      }
+
+      // API 호출 성공 시, UI(jobs state) 즉시 업데이트
+      setJobs((prevJobs) =>
+        prevJobs.map(
+          (job) =>
+            job.id === postId
+              ? { ...job, isBookmarked: !job.isBookmarked } // 해당 job의 isBookmarked 값 토글
+              : job // 나머지는 그대로 반환
+        )
+      );
+    } catch (error) {
+      console.error('북마크 처리에 실패했습니다:', error);
+      alert('북마크 상태 변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <div>
-      <div>
-        <h1>공고 목록 데이터 확인용</h1>
-        <pre>{JSON.stringify(jobs, null, 2)}</pre>
-      </div>
       <Filter
         Filters={filters}
         ROLE_MAP={ROLE_MAP}
         DOMAIN_MAP={DOMAIN_MAP}
         onFilterChange={handleFilterChange}
       />
-      <JobList />
+
+      <div className={styles.joblist}>
+        {jobs.map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+            onToggleBookmark={handleBookmarkToggle}
+          />
+        ))}
+      </div>
+
       <Pagination
         pageCount={totalPages}
         currentPage={currentPage}
