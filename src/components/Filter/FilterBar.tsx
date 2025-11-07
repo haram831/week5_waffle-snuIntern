@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { JobFilter } from '../../@types/job';
+import type { JobFilter } from '../../@types/job.d.ts';
+import styles from './FilterBar.module.css';
 
 interface Props {
   Filters: JobFilter;
