@@ -1,6 +1,8 @@
+import styles from './Pagination.module.css';
+
 interface Props {
-  pageCount: number; // total number of pages
-  currentPage: number; // current active page
+  pageCount: number;
+  currentPage: number;
   onPageChange: (page: number) => void;
   prevPageText?: string;
   nextPageText?: string;
@@ -18,30 +20,34 @@ export default function Pagination({
   const noNext = currentPage === pageCount;
 
   return (
-    <div>
-      <ul>
-        <li>
+    <div className={styles.container}>
+      <ul className={styles.list}>
+        <li className={styles.item}>
           {noPrev ? (
-            <span>{prevPageText}</span>
+            <span className={styles.disabled}>{prevPageText}</span>
           ) : (
-            <button onClick={() => onPageChange(currentPage - 1)}>
+            <button className={styles.arrow} onClick={() => onPageChange(currentPage - 1)}>
               {prevPageText}
             </button>
           )}
         </li>
-        {pages.map(
-          (page) =>
-            page <= pageCount && (
-              <li key={page}>
-                <button onClick={() => onPageChange(page)}>{page}</button>
-              </li>
-            )
-        )}
-        <li>
+
+        {pages.map(page => (
+          <li key={page} className={styles.item}>
+            <button
+              className={`${styles.pageButton} ${page === currentPage ? styles.active : ''}`}
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </button>
+          </li>
+        ))}
+
+        <li className={styles.item}>
           {noNext ? (
-            <span>{nextPageText}</span>
+            <span className={styles.disabled}>{nextPageText}</span>
           ) : (
-            <button onClick={() => onPageChange(currentPage + 1)}>
+            <button className={styles.arrow} onClick={() => onPageChange(currentPage + 1)}>
               {nextPageText}
             </button>
           )}
