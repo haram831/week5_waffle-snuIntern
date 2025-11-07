@@ -47,13 +47,6 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
 
   return (
     <div className={styles.wrap} ref={rootRef}>
-      <div className={styles.headerRow}>
-        <div className={styles.headerBox}>
-          <span className={styles.headerTitle}>직군 필터</span>
-          <span className={styles.headerChevron}>▾</span>
-        </div>
-      </div>
-
       <div className={styles.row}>
         <div className={styles.triggerGroup}>
           <div className={styles.triggerWrap}>
