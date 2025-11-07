@@ -1,6 +1,6 @@
-import type { JobFilter, RoleMapType } from '../@types/job.d.ts';
-import FilterBar from './Filter/FilterBar';
-import PositionFilter from './Filter/PositionFilter';
+import type { JobFilter, RoleMapType } from '../../@types/job';
+import FilterBar from './FilterBar';
+import PositionFilter from './PositionFilter';
 
 interface Props {
   Filters: JobFilter;
