@@ -21,9 +21,22 @@ export const fetchJobList = async (
   });
   const url = `${baseUrl}?${queryString}`;
 
+  // 헤더에 로그인 토큰을 넣어야해서 수정
+  const headers: { [key: string]: string } = {
+    'Content-Type': 'application/json',
+  };
+
+  // localStorage에서 토큰을 가져오기
+  const token = localStorage.getItem('authToken');
+
+  if (token) {
+    // 토큰이 있으면 header에 추가
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
     const response = await axios.get(url, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers,
     });
 
     return response.data;

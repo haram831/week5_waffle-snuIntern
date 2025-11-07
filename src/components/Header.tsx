@@ -15,7 +15,10 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>스누인턴</h1>
+      {/* 스누인턴 클릭하면 홈페이지로 이동 */}
+      <Link to="/" className={styles.title}>
+        스누인턴
+      </Link>
       <div className={styles.menu}>
         {isLoggedIn ? (
           <>
