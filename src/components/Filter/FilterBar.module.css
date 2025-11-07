@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  margin-bottom: 16px;
+}
+
+.leftGroup, .rightGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  margin-right: 6px;
+  color: var(--text-strong, #111827);
+  font-size: 14px;
+}
+
+.filterButton {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--surface, #fff);
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+}
+
+.filterButton:hover {
+  background: #f8fafc;
+}
+
+.filterButton:active {
+  transform: translateY(1px);
+}
+
+.filterButton.active {
+  border-color: var(--primary-color, #2563eb);
+  background: color-mix(in srgb, var(--primary-color, #2563eb) 9%, white);
+  color: var(--primary-color, #2563eb);
+  font-weight: 600;
+}
+
+.select {
+  min-width: 160px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.chipGroup {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: #fff;
+  font-size: 13px;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.resetButton {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background: #f3f4f6;
+}
+
+.applyButton {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-color, #2563eb);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.applyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:global(button:focus-visible), :global(select:focus-visible) {
+  outline: 3px solid color-mix(in srgb, var(--primary-color, #2563eb) 50%, transparent);
+  outline-offset: 2px;
+}
