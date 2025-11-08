@@ -46,9 +46,7 @@ export default function FilterBar({
     const found = ORDER_OPTIONS.find((o) => o.value === (temp.order ?? 0));
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
-
-  // 'useEffect'가 있던 자리가 삭제되었습니다.
-
+  
   return (
     <div className={styles.bar}>
       <div className={styles.item}>
