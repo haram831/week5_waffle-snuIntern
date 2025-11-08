@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import styles from "./PositionFilter.module.css";
-import type { JobFilter, RoleMapType } from "../../@types/job.d.ts";
+import { useEffect, useMemo, useState } from 'react';
+import type { JobFilter, RoleMapType } from '../../@types/job.d.ts';
+import styles from './PositionFilter.module.css';
 
 type RoleSelection = Record<string, { name: string; roles: Record<string, boolean> }>;
 
@@ -52,10 +52,7 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
     [selectedRoles]
   );
 
-  const label = useMemo(
-    () => (totalCount > 0 ? `직군 필터 · ${totalCount}` : "직군 필터"),
-    [totalCount]
-  );
+  const label = useMemo(() => (totalCount > 0 ? `직군 필터 · ${totalCount}` : '직군 필터'), [totalCount]);
 
   const toggleRole = (categoryKey: string, roleKey: string, checked: boolean) => {
     setSelectedRoles((prev) => {
@@ -71,9 +68,10 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
   const toggleAllInCategory = (categoryKey: string, on: boolean) => {
     setSelectedRoles((prev) => {
       const prevCategory = prev[categoryKey];
-      const updated = Object.fromEntries(
-        Object.keys(prevCategory.roles).map((rk) => [rk, on])
-      ) as Record<string, boolean>;
+      const updated = Object.fromEntries(Object.keys(prevCategory.roles).map((rk) => [rk, on])) as Record<
+        string,
+        boolean
+      >;
       return {
         ...prev,
         [categoryKey]: { ...prevCategory, roles: updated },
@@ -99,7 +97,7 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
   const handleApply = () => {
     const selectedRoleKeys = Object.values(selectedRoles).flatMap((category) =>
       Object.entries(category.roles)
-        .filter(([_, isSelected]) => isSelected)
+        .filter(([, isSelected]) => isSelected)
         .map(([roleKey]) => roleKey)
     );
     onFilterChange({
@@ -114,7 +112,7 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
     <div className={styles.wrap}>
       <button
         id="btn-role"
-        className={`${styles.mainBtn} ${open ? styles.active : ""}`}
+        className={`${styles.mainBtn} ${open ? styles.active : ''}`}
         aria-expanded={open}
         aria-controls="panel-role"
         onClick={() => setOpen((v) => !v)}
@@ -135,18 +133,10 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
                   <div className={styles.sectionHeader}>
                     <h4 className={styles.heading}>{category.name}</h4>
                     <div className={styles.sectionActions}>
-                      <button
-                        type="button"
-                        className={styles.smallGhost}
-                        onClick={() => toggleAllInCategory(categoryKey, true)}
-                      >
+                      <button type="button" className={styles.smallGhost} onClick={() => toggleAllInCategory(categoryKey, true)}>
                         전체선택
                       </button>
-                      <button
-                        type="button"
-                        className={styles.smallGhost}
-                        onClick={() => toggleAllInCategory(categoryKey, false)}
-                      >
+                      <button type="button" className={styles.smallGhost} onClick={() => toggleAllInCategory(categoryKey, false)}>
                         전체해제
                       </button>
                     </div>
@@ -179,8 +169,12 @@ export default function PositionFilter({ Filters, ROLE_MAP, onFilterChange }: Pr
           </div>
 
           <div className={styles.footer}>
-            <button className={styles.ghost} onClick={handleReset}>초기화</button>
-            <button className={styles.primary} onClick={handleApply}>적용</button>
+            <button className={styles.ghost} onClick={handleReset}>
+              초기화
+            </button>
+            <button className={styles.primary} onClick={handleApply}>
+              적용
+            </button>
           </div>
         </div>
       )}
