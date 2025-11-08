@@ -47,9 +47,7 @@ export default function FilterBar({
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
 
-  useEffect(() => {
-    setTemp((t) => ({ ...t, page: 1 }));
-  }, [temp.isActive, temp.domains, temp.order]);
+  // 'useEffect'가 있던 자리가 삭제되었습니다.
 
   return (
     <div className={styles.bar}>
@@ -73,7 +71,9 @@ export default function FilterBar({
               open
               anchorId="btn-status"
               onClose={() => setOpen(null)}
-              onReset={() => setTemp((t) => ({ ...t, isActive: undefined }))}
+              onReset={() =>
+                setTemp((t) => ({ ...t, isActive: undefined, page: 1 }))
+              }
               onApply={() => {
                 onFilterChange(temp);
                 setOpen(null);
@@ -91,7 +91,7 @@ export default function FilterBar({
                     name="isActive"
                     checked={temp.isActive === undefined}
                     onChange={() =>
-                      setTemp((t) => ({ ...t, isActive: undefined }))
+                      setTemp((t) => ({ ...t, isActive: undefined, page: 1 }))
                     }
                   />
                   <span>전체</span>
@@ -101,7 +101,9 @@ export default function FilterBar({
                     type="radio"
                     name="isActive"
                     checked={temp.isActive === true}
-                    onChange={() => setTemp((t) => ({ ...t, isActive: true }))}
+                    onChange={() =>
+                      setTemp((t) => ({ ...t, isActive: true, page: 1 }))
+                    }
                   />
                   <span>모집중</span>
                 </label>
@@ -131,7 +133,7 @@ export default function FilterBar({
               open
               anchorId="btn-domain"
               onClose={() => setOpen(null)}
-              onReset={() => setTemp((t) => ({ ...t, domains: [] }))}
+              onReset={() => setTemp((t) => ({ ...t, domains: [], page: 1 }))}
               onApply={() => {
                 onFilterChange(temp);
                 setOpen(null);
@@ -156,9 +158,10 @@ export default function FilterBar({
                         setTemp((t) => ({
                           ...t,
                           domains: Object.keys(DOMAIN_MAP),
+                          page: 1,
                         }));
                       } else {
-                        setTemp((t) => ({ ...t, domains: [] }));
+                        setTemp((t) => ({ ...t, domains: [], page: 1 }));
                       }
                     }}
                   />
@@ -175,7 +178,7 @@ export default function FilterBar({
                           const cur = new Set(t.domains ?? []);
                           if (e.target.checked) cur.add(key);
                           else cur.delete(key);
-                          return { ...t, domains: Array.from(cur) };
+                          return { ...t, domains: Array.from(cur), page: 1 };
                         });
                       }}
                     />
@@ -208,7 +211,7 @@ export default function FilterBar({
               open
               anchorId="btn-order"
               onClose={() => setOpen(null)}
-              onReset={() => setTemp((t) => ({ ...t, order: 0 }))}
+              onReset={() => setTemp((t) => ({ ...t, order: 0, page: 1 }))}
               onApply={() => {
                 onFilterChange(temp);
                 setOpen(null);
@@ -227,7 +230,7 @@ export default function FilterBar({
                       name="order"
                       checked={(temp.order ?? 0) === opt.value}
                       onChange={() =>
-                        setTemp((t) => ({ ...t, order: opt.value }))
+                        setTemp((t) => ({ ...t, order: opt.value, page: 1 }))
                       }
                     />
                     <span>{opt.label}</span>
