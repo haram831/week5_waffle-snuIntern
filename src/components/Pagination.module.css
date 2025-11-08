@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.list {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0;
+}
+
+.item {
+  list-style: none;
+}
+
+.pageButton,
+.arrow {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-color, #1f2937);
+}
+.pageButton:hover,
+.arrow:hover {
+  background: #f8fafc;
+}
+
+.active {
+  background: var(--primary-color, #2563eb);
+  color: #fff;
+  border-color: var(--primary-color, #2563eb);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.list button:focus-visible {
+  outline: 3px solid
+    color-mix(in srgb, var(--primary-color, #2563eb) 50%, transparent);
+  outline-offset: 2px;
+}
