@@ -46,7 +46,7 @@ export default function FilterBar({
     const found = ORDER_OPTIONS.find((o) => o.value === (temp.order ?? 0));
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
-  
+
   return (
     <div className={styles.bar}>
       <div className={styles.item}>
