@@ -1,4 +1,4 @@
-import styles from "./Pagination.module.css";
+import styles from './Pagination.module.css';
 
 interface Props {
   pageCount: number;
@@ -12,8 +12,8 @@ export default function Pagination({
   pageCount,
   currentPage,
   onPageChange,
-  prevPageText = "<",
-  nextPageText = ">",
+  prevPageText = '<',
+  nextPageText = '>',
 }: Props) {
   const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
   const noPrev = currentPage <= 1;
@@ -25,7 +25,7 @@ export default function Pagination({
         <li className={styles.item}>
           <button
             type="button"
-            className={`${styles.arrow} ${noPrev ? styles.disabled : ""}`}
+            className={`${styles.arrow} ${noPrev ? styles.disabled : ''}`}
             onClick={() => onPageChange(currentPage - 1)}
             disabled={noPrev}
             aria-label="이전 페이지"
@@ -38,11 +38,9 @@ export default function Pagination({
           <li key={page} className={styles.item}>
             <button
               type="button"
-              className={`${styles.pageButton} ${
-                currentPage === page ? styles.active : ""
-              }`}
+              className={`${styles.pageButton} ${currentPage === page ? styles.active : ''}`}
               onClick={() => onPageChange(page)}
-              aria-current={currentPage === page ? "page" : undefined}
+              aria-current={currentPage === page ? 'page' : undefined}
               aria-label={`${page}페이지`}
             >
               {page}
@@ -53,7 +51,7 @@ export default function Pagination({
         <li className={styles.item}>
           <button
             type="button"
-            className={`${styles.arrow} ${noNext ? styles.disabled : ""}`}
+            className={`${styles.arrow} ${noNext ? styles.disabled : ''}`}
             onClick={() => onPageChange(currentPage + 1)}
             disabled={noNext}
             aria-label="다음 페이지"
