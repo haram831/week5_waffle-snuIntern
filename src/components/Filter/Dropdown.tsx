@@ -1,16 +1,16 @@
-import { useEffect, useRef } from "react";
-import styles from "./Dropdown.module.css";
-import useOutside from "./useOutside";
+import { useEffect, useRef } from 'react';
+import styles from './Dropdown.module.css';
+import useOutside from './useOutside';
 
 type Props = {
   open: boolean;
-  anchorId: string;            // 버튼 id (aria-labelledby 연동)
+  anchorId: string;
   onClose: () => void;
   children: React.ReactNode;
-  onReset?: () => void;        // 하단 "초기화"
-  onApply?: () => void;        // 하단 "적용"
+  onReset?: () => void;
+  onApply?: () => void;
   width?: number | string;
-  role?: "listbox" | "dialog";
+  role?: 'listbox' | 'dialog';
 };
 
 export default function Dropdown({
@@ -21,23 +21,26 @@ export default function Dropdown({
   onReset,
   onApply,
   width = 280,
-  role = "listbox",
+  role = 'listbox',
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  useOutside(ref, onClose);
+
+  useOutside(ref as React.RefObject<HTMLElement>, onClose);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     }
-    if (open) document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    if (open) document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
+
+  if (!open) return null;
 
   return (
     <div
       ref={ref}
-      className={`${styles.panel} ${open ? styles.open : ""}`}
+      className={`${styles.panel} ${open ? styles.open : ''}`}
       style={{ width }}
       role={role}
       aria-labelledby={anchorId}
