@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import styles from "./FilterBar.module.css";
-import Dropdown from "./Dropdown";
-import type { JobFilter } from "../../@types/job.d.ts";
+import { useEffect, useMemo, useState } from 'react';
+import styles from './FilterBar.module.css';
+import Dropdown from './Dropdown';
+import type { JobFilter } from '../../@types/job.d.ts';
 
 interface Props {
   Filters: JobFilter;
@@ -10,12 +10,12 @@ interface Props {
 }
 
 const ORDER_OPTIONS = [
-  { value: 0, label: "공고등록순" },
-  { value: 1, label: "마감임박순" },
+  { value: 0, label: '공고등록순' },
+  { value: 1, label: '마감임박순' },
 ] as const;
 
 export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props) {
-  const [open, setOpen] = useState<null | "status" | "domain" | "order">(null);
+  const [open, setOpen] = useState<null | 'status' | 'domain' | 'order'>(null);
   const [temp, setTemp] = useState<JobFilter>(Filters);
 
   useEffect(() => setTemp(Filters), [Filters]);
@@ -23,22 +23,22 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
   const closeAll = () => setOpen(null);
 
   const statusLabel = useMemo(() => {
-    if (temp.isActive === undefined) return "모집상태 · 전체";
-    return temp.isActive ? "모집상태 · 모집중" : "모집상태 · 전체";
+    if (temp.isActive === undefined) return '모집상태 · 전체';
+    return temp.isActive ? '모집상태 · 모집중' : '모집상태 · 전체';
   }, [temp.isActive]);
 
   const domainLabel = useMemo(() => {
     const allKeys = Object.keys(DOMAIN_MAP);
     const selected = temp.domains ?? [];
-    if (selected.length === 0 || selected.length === allKeys.length) return "업종 · 전체";
-    const shown = selected.slice(0, 2).map((k) => DOMAIN_MAP[k] ?? k).join(", ");
-    const more = selected.length > 2 ? ` 외 ${selected.length - 2}` : "";
+    if (selected.length === 0 || selected.length === allKeys.length) return '업종 · 전체';
+    const shown = selected.slice(0, 2).map((k) => DOMAIN_MAP[k] ?? k).join(', ');
+    const more = selected.length > 2 ? ` 외 ${selected.length - 2}` : '';
     return `업종 · ${shown}${more}`;
   }, [temp.domains, DOMAIN_MAP]);
 
   const orderLabel = useMemo(() => {
     const found = ORDER_OPTIONS.find((o) => o.value === (temp.order ?? 0));
-    return `정렬 · ${found?.label ?? "공고등록순"}`;
+    return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
 
   const applyAll = () => {
@@ -68,16 +68,16 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
         <div className={styles.item}>
           <button
             id="btn-status"
-            className={`${styles.filterButton} ${open === "status" ? styles.active : ""}`}
-            aria-expanded={open === "status"}
+            className={`${styles.filterButton} ${open === 'status' ? styles.active : ''}`}
+            aria-expanded={open === 'status'}
             aria-controls="dd-status"
-            onClick={() => setOpen(open === "status" ? null : "status")}
+            onClick={() => setOpen(open === 'status' ? null : 'status')}
           >
             {statusLabel}
             <span className={styles.caret} />
           </button>
 
-          {open === "status" && (
+          {open === 'status' && (
             <div className={styles.popAnchor} id="dd-status">
               <Dropdown
                 open
@@ -116,16 +116,16 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
         <div className={styles.item}>
           <button
             id="btn-domain"
-            className={`${styles.filterButton} ${open === "domain" ? styles.active : ""}`}
-            aria-expanded={open === "domain"}
+            className={`${styles.filterButton} ${open === 'domain' ? styles.active : ''}`}
+            aria-expanded={open === 'domain'}
             aria-controls="dd-domain"
-            onClick={() => setOpen(open === "domain" ? null : "domain")}
+            onClick={() => setOpen(open === 'domain' ? null : 'domain')}
           >
             {domainLabel}
             <span className={styles.caret} />
           </button>
 
-        {open === "domain" && (
+          {open === 'domain' && (
             <div className={styles.popAnchor} id="dd-domain">
               <Dropdown
                 open
@@ -184,16 +184,16 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
         <div className={styles.item}>
           <button
             id="btn-order"
-            className={`${styles.filterButton} ${open === "order" ? styles.active : ""}`}
-            aria-expanded={open === "order"}
+            className={`${styles.filterButton} ${open === 'order' ? styles.active : ''}`}
+            aria-expanded={open === 'order'}
             aria-controls="dd-order"
-            onClick={() => setOpen(open === "order" ? null : "order")}
+            onClick={() => setOpen(open === 'order' ? null : 'order')}
           >
             {orderLabel}
             <span className={styles.caret} />
           </button>
 
-          {open === "order" && (
+          {open === 'order' && (
             <div className={styles.popAnchor} id="dd-order">
               <Dropdown
                 open
@@ -224,8 +224,12 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
       </div>
 
       <div className={styles.footer}>
-        <button className={styles.resetButton} onClick={resetAll}>전체 초기화</button>
-        <button className={styles.applyButton} onClick={applyAll}>적용</button>
+        <button className={styles.resetButton} onClick={resetAll}>
+          전체 초기화
+        </button>
+        <button className={styles.applyButton} onClick={applyAll}>
+          적용
+        </button>
       </div>
     </div>
   );
