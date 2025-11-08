@@ -47,6 +47,18 @@ export default function FilterBar({
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
 
+  const handleGlobalReset = () => {
+    const resetState: JobFilter = {
+      ...temp,
+      isActive: undefined,
+      domains: [],
+      order: 0,
+      page: 1,
+    };
+    setTemp(resetState);
+    onFilterChange(resetState);
+  };
+
   return (
     <div className={styles.bar}>
       <div className={styles.item}>
@@ -239,6 +251,14 @@ export default function FilterBar({
           </div>
         )}
       </div>
+
+      <button
+        type="button"
+        className={styles.resetButton}
+        onClick={handleGlobalReset}
+      >
+        전체 초기화
+      </button>
     </div>
   );
 }
