@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export default function useOutside<T extends HTMLElement>(
   ref: React.RefObject<T | null>,
@@ -10,7 +10,7 @@ export default function useOutside<T extends HTMLElement>(
       if (!el) return;
       if (!el.contains(e.target as Node)) onOutside();
     }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, [ref, onOutside]);
 }
