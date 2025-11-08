@@ -105,3 +105,19 @@
   background: #111827;
   color: #fff;
 }
+
+.resetButton {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  align-self: center;
+}
+
+.resetButton:hover {
+  background: #e5e7eb;
+}
