@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import styles from './PositionFilter.module.css';
 import type { JobFilter, RoleMapType } from '../../@types/job.d.ts';
+import styles from './PositionFilter.module.css';
 
 type RoleSelection = Record<
   string,
@@ -32,9 +32,8 @@ export default function PositionFilter({
     ) as RoleSelection;
   }, [Filters.roles, ROLE_MAP]);
 
-  const [selectedRoles, setSelectedRoles] = useState<RoleSelection>(
-    initialSelected
-  );
+  const [selectedRoles, setSelectedRoles] =
+    useState<RoleSelection>(initialSelected);
 
   useEffect(() => setSelectedRoles(initialSelected), [initialSelected]);
 
@@ -174,11 +173,7 @@ export default function PositionFilter({
                               !!selectedRoles[categoryKey].roles[roleKey]
                             }
                             onChange={(e) =>
-                              toggleRole(
-                                categoryKey,
-                                roleKey,
-                                e.target.checked
-                              )
+                              toggleRole(categoryKey, roleKey, e.target.checked)
                             }
                           />
                           <span>{roleLabel}</span>
