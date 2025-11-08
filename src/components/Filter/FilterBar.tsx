@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import styles from './FilterBar.module.css';
-import Dropdown from './Dropdown';
 import type { JobFilter } from '../../@types/job.d.ts';
+import Dropdown from './Dropdown';
+import styles from './FilterBar.module.css';
 
 interface Props {
   Filters: JobFilter;
   DOMAIN_MAP: Record<string, string>;
-  onFilterChange: (newFilters: JobFilter) => void;
+  onFilterChange: (f: JobFilter) => void;
 }
 
 const ORDER_OPTIONS = [
@@ -28,8 +28,12 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
   const domainLabel = useMemo(() => {
     const allKeys = Object.keys(DOMAIN_MAP);
     const selected = temp.domains ?? [];
-    if (selected.length === 0 || selected.length === allKeys.length) return '업종 · 전체';
-    const shown = selected.slice(0, 2).map((k) => DOMAIN_MAP[k] ?? k).join(', ');
+    if (selected.length === 0 || selected.length === allKeys.length)
+      return '업종 · 전체';
+    const shown = selected
+      .slice(0, 2)
+      .map((k) => DOMAIN_MAP[k] ?? k)
+      .join(', ');
     const more = selected.length > 2 ? ` 외 ${selected.length - 2}` : '';
     return `업종 · ${shown}${more}`;
   }, [temp.domains, DOMAIN_MAP]);
@@ -39,13 +43,12 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
 
-  const applyAndClose = () => {
-    onFilterChange({ ...temp, page: undefined });
-    setOpen(null);
-  };
+  useEffect(() => {
+    setTemp((t) => ({ ...t, page: 1 }));
+  }, [temp.isActive, temp.domains?.join(','), temp.order]);
 
   return (
-    <div className={styles.bar} role="group" aria-label="필터 바">
+    <div className={styles.bar}>
       <div className={styles.item}>
         <button
           id="btn-status"
@@ -54,9 +57,10 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
           aria-controls="dd-status"
           onClick={() => setOpen(open === 'status' ? null : 'status')}
         >
-          {statusLabel}
+          <span className={styles.label}>{statusLabel}</span>
           <span className={styles.caret} />
         </button>
+
         {open === 'status' && (
           <div className={styles.popAnchor} id="dd-status">
             <Dropdown
@@ -64,17 +68,25 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               anchorId="btn-status"
               onClose={() => setOpen(null)}
               onReset={() => setTemp((t) => ({ ...t, isActive: undefined }))}
-              onApply={applyAndClose}
-              width={260}
+              onApply={() => {
+                onFilterChange(temp);
+                setOpen(null);
+              }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="모집상태">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="모집상태"
+              >
                 <label className={styles.optionRow}>
                   <input
                     type="radio"
                     name="isActive"
                     checked={temp.isActive === undefined}
-                    onChange={() => setTemp((t) => ({ ...t, isActive: undefined }))}
+                    onChange={() =>
+                      setTemp((t) => ({ ...t, isActive: undefined }))
+                    }
                   />
                   <span>전체</span>
                 </label>
@@ -101,9 +113,10 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
           aria-controls="dd-domain"
           onClick={() => setOpen(open === 'domain' ? null : 'domain')}
         >
-          {domainLabel}
+          <span className={styles.label}>{domainLabel}</span>
           <span className={styles.caret} />
         </button>
+
         {open === 'domain' && (
           <div className={styles.popAnchor} id="dd-domain">
             <Dropdown
@@ -111,21 +124,31 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               anchorId="btn-domain"
               onClose={() => setOpen(null)}
               onReset={() => setTemp((t) => ({ ...t, domains: [] }))}
-              onApply={applyAndClose}
-              width={320}
+              onApply={() => {
+                onFilterChange(temp);
+                setOpen(null);
+              }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="업종">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="업종"
+              >
                 <label className={styles.optionRow}>
                   <input
                     type="checkbox"
                     checked={
-                      Object.keys(DOMAIN_MAP).every((k) => temp.domains?.includes(k)) &&
-                      (temp.domains?.length ?? 0) > 0
+                      Object.keys(DOMAIN_MAP).every((k) =>
+                        temp.domains?.includes(k),
+                      ) && (temp.domains?.length ?? 0) > 0
                     }
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setTemp((t) => ({ ...t, domains: Object.keys(DOMAIN_MAP) }));
+                        setTemp((t) => ({
+                          ...t,
+                          domains: Object.keys(DOMAIN_MAP),
+                        }));
                       } else {
                         setTemp((t) => ({ ...t, domains: [] }));
                       }
@@ -133,16 +156,19 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
                   />
                   <span>전체</span>
                 </label>
-                {Object.entries(DOMAIN_MAP).map(([value, label]) => (
-                  <label className={styles.optionRow} key={value}>
+
+                {Object.entries(DOMAIN_MAP).map(([key, label]) => (
+                  <label className={styles.optionRow} key={key}>
                     <input
                       type="checkbox"
-                      checked={!!temp.domains?.includes(value)}
+                      checked={!!temp.domains?.includes(key)}
                       onChange={(e) => {
-                        const next = new Set(temp.domains ?? []);
-                        if (e.target.checked) next.add(value);
-                        else next.delete(value);
-                        setTemp((t) => ({ ...t, domains: Array.from(next) }));
+                        setTemp((t) => {
+                          const cur = new Set(t.domains ?? []);
+                          if (e.target.checked) cur.add(key);
+                          else cur.delete(key);
+                          return { ...t, domains: Array.from(cur) };
+                        });
                       }}
                     />
                     <span>{label}</span>
@@ -162,9 +188,10 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
           aria-controls="dd-order"
           onClick={() => setOpen(open === 'order' ? null : 'order')}
         >
-          {orderLabel}
+          <span className={styles.label}>{orderLabel}</span>
           <span className={styles.caret} />
         </button>
+
         {open === 'order' && (
           <div className={styles.popAnchor} id="dd-order">
             <Dropdown
@@ -172,18 +199,26 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               anchorId="btn-order"
               onClose={() => setOpen(null)}
               onReset={() => setTemp((t) => ({ ...t, order: 0 }))}
-              onApply={applyAndClose}
-              width={220}
+              onApply={() => {
+                onFilterChange(temp);
+                setOpen(null);
+              }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="정렬">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="정렬"
+              >
                 {ORDER_OPTIONS.map((opt) => (
                   <label className={styles.optionRow} key={opt.value}>
                     <input
                       type="radio"
                       name="order"
                       checked={(temp.order ?? 0) === opt.value}
-                      onChange={() => setTemp((t) => ({ ...t, order: opt.value }))}
+                      onChange={() =>
+                        setTemp((t) => ({ ...t, order: opt.value }))
+                      }
                     />
                     <span>{opt.label}</span>
                   </label>
