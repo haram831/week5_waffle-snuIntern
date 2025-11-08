@@ -14,7 +14,11 @@ const ORDER_OPTIONS = [
   { value: 1, label: '마감임박순' },
 ] as const;
 
-export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props) {
+export default function FilterBar({
+  Filters,
+  DOMAIN_MAP,
+  onFilterChange,
+}: Props) {
   const [open, setOpen] = useState<null | 'status' | 'domain' | 'order'>(null);
   const [temp, setTemp] = useState<JobFilter>(Filters);
 
@@ -28,7 +32,8 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
   const domainLabel = useMemo(() => {
     const allKeys = Object.keys(DOMAIN_MAP);
     const selected = temp.domains ?? [];
-    if (selected.length === 0 || selected.length === allKeys.length) return '업종 · 전체';
+    if (selected.length === 0 || selected.length === allKeys.length)
+      return '업종 · 전체';
     const shown = selected
       .slice(0, 2)
       .map((k) => DOMAIN_MAP[k] ?? k)
@@ -42,22 +47,18 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
     return `정렬 · ${found?.label ?? '공고등록순'}`;
   }, [temp.order]);
 
-  // 페이지 리셋 트리거 키 (의존성 최소화, 로직 동일)
-  const resetKey = useMemo(
-    () => `${temp.isActive ?? 'u'}|${(temp.domains ?? []).join(',')}|${temp.order ?? 0}`,
-    [temp.isActive, temp.domains, temp.order]
-  );
-
   useEffect(() => {
     setTemp((t) => ({ ...t, page: 1 }));
-  }, [resetKey]);
+  }, [temp.isActive, temp.domains, temp.order]);
 
   return (
     <div className={styles.bar}>
       <div className={styles.item}>
         <button
           id="btn-status"
-          className={`${styles.filterButton} ${open === 'status' ? styles.active : ''}`}
+          className={`${styles.filterButton} ${
+            open === 'status' ? styles.active : ''
+          }`}
           aria-expanded={open === 'status'}
           aria-controls="dd-status"
           onClick={() => setOpen(open === 'status' ? null : 'status')}
@@ -79,13 +80,19 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="모집상태">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="모집상태"
+              >
                 <label className={styles.optionRow}>
                   <input
                     type="radio"
                     name="isActive"
                     checked={temp.isActive === undefined}
-                    onChange={() => setTemp((t) => ({ ...t, isActive: undefined }))}
+                    onChange={() =>
+                      setTemp((t) => ({ ...t, isActive: undefined }))
+                    }
                   />
                   <span>전체</span>
                 </label>
@@ -107,7 +114,9 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
       <div className={styles.item}>
         <button
           id="btn-domain"
-          className={`${styles.filterButton} ${open === 'domain' ? styles.active : ''}`}
+          className={`${styles.filterButton} ${
+            open === 'domain' ? styles.active : ''
+          }`}
           aria-expanded={open === 'domain'}
           aria-controls="dd-domain"
           onClick={() => setOpen(open === 'domain' ? null : 'domain')}
@@ -129,13 +138,18 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="업종">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="업종"
+              >
                 <label className={styles.optionRow}>
                   <input
                     type="checkbox"
                     checked={
-                      Object.keys(DOMAIN_MAP).every((k) => temp.domains?.includes(k)) &&
-                      (temp.domains?.length ?? 0) > 0
+                      Object.keys(DOMAIN_MAP).every((k) =>
+                        temp.domains?.includes(k)
+                      ) && (temp.domains?.length ?? 0) > 0
                     }
                     onChange={(e) => {
                       if (e.target.checked) {
@@ -177,7 +191,9 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
       <div className={styles.item}>
         <button
           id="btn-order"
-          className={`${styles.filterButton} ${open === 'order' ? styles.active : ''}`}
+          className={`${styles.filterButton} ${
+            open === 'order' ? styles.active : ''
+          }`}
           aria-expanded={open === 'order'}
           aria-controls="dd-order"
           onClick={() => setOpen(open === 'order' ? null : 'order')}
@@ -199,14 +215,20 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
               }}
               role="listbox"
             >
-              <div className={styles.optionGroup} role="group" aria-label="정렬">
+              <div
+                className={styles.optionGroup}
+                role="group"
+                aria-label="정렬"
+              >
                 {ORDER_OPTIONS.map((opt) => (
                   <label className={styles.optionRow} key={opt.value}>
                     <input
                       type="radio"
                       name="order"
                       checked={(temp.order ?? 0) === opt.value}
-                      onChange={() => setTemp((t) => ({ ...t, order: opt.value }))}
+                      onChange={() =>
+                        setTemp((t) => ({ ...t, order: opt.value }))
+                      }
                     />
                     <span>{opt.label}</span>
                   </label>
