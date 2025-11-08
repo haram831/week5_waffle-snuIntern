@@ -1,9 +1,9 @@
 .bar {
   display: flex;
-  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
-  gap: 8px 10px;
-  padding: 0 12px 12px;
+  flex-wrap: wrap;
+  padding: 8px 0 6px;
   border-bottom: 1px solid var(--border-color, #e5e7eb);
   margin-bottom: 12px;
   font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, Segoe UI,
@@ -19,65 +19,89 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 36px;
+  height: 34px;
   padding: 0 12px;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   background: #fff;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease,
-    transform 0.05s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s
+    ease;
 }
-.filterButton:hover { background: #f8fafc; }
-.filterButton:active { transform: translateY(1px); }
+
+.filterButton:hover {
+  background: #f8fafc;
+}
+
+.filterButton:active {
+  transform: translateY(1px);
+}
 
 .active {
   border-color: var(--primary-color, #2563eb);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #2563eb) 15%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--primary-color, #2563eb) 15%, transparent);
 }
 
 .label {
-  font-weight: 600;
   color: #111827;
-}
-.muted {
-  color: #6b7280;
-  font-weight: 500;
 }
 
 .caret {
-  width: 0; height: 0;
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 6px solid #9ca3af;
 }
 
-.popAnchor { position: relative; }
-.optionGroup { display: grid; gap: 6px; }
+.popAnchor {
+  position: relative;
+}
+
+.optionGroup {
+  display: grid;
+  gap: 6px;
+}
+
 .optionRow {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
+  padding: 8px 6px;
   border-radius: 8px;
 }
+
+.optionRow:hover {
+  background: #f8fafc;
+}
+
 .optionRow input[type="radio"],
 .optionRow input[type="checkbox"] {
-  width: 16px; height: 16px;
+  width: 16px;
+  height: 16px;
 }
 
 .footer {
   position: absolute;
-  right: 12px; bottom: 12px;
-  display: flex; gap: 8px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
 }
 
 .ghost {
-  height: 32px; padding: 0 10px;
-  border-radius: 8px; background: #f3f4f6;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #f3f4f6;
 }
+
 .applyButton,
 .primary {
-  height: 32px; padding: 0 12px;
-  border-radius: 8px; background: #111827; color: #fff;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #111827;
+  color: #fff;
 }
