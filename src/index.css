@@ -39,8 +39,8 @@ li {
 }
 
 body {
-  font-family: "Pretendard", "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Pretendard", "Inter", "Noto Sans KR", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text-color);
   background-color: var(--bg-soft);
   line-height: 1.5;
@@ -55,30 +55,11 @@ a {
 
 button {
   font-family: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
-ul,
-ol {
-  list-style: none;
+  border: 0;
+  background: transparent;
 }
 
 img {
   max-width: 100%;
-  height: auto;
   display: block;
-}
-
-:focus {
-  outline-color: var(--primary-color);
 }
