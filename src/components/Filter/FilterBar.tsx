@@ -44,13 +44,6 @@ export default function FilterBar({ Filters, DOMAIN_MAP, onFilterChange }: Props
     setOpen(null);
   };
 
-  const resetAll = () => {
-    const cleared: JobFilter = { ...temp, isActive: undefined, domains: [], order: 0, page: undefined };
-    setTemp(cleared);
-    onFilterChange(cleared);
-    setOpen(null);
-  };
-
   return (
     <div className={styles.bar} role="group" aria-label="필터 바">
       <div className={styles.item}>
