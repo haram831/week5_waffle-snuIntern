@@ -13,6 +13,21 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
+// initialSelected과 emptySelected 생성을 위한 헬퍼 함수
+const generateRoleSelection = (
+  roles: string[],
+  ROLE_MAP: RoleMapType
+): RoleSelection => {
+  return Object.fromEntries(
+    Object.entries(ROLE_MAP).map(([ck, c]) => {
+      const inner = Object.fromEntries(
+        Object.keys(c.roles).map((rk) => [rk, roles.includes(rk)])
+      ) as Record<string, boolean>;
+      return [ck, { name: c.name, roles: inner }];
+    })
+  ) as RoleSelection;
+};
+
 export default function PositionFilter({
   Filters,
   ROLE_MAP,
@@ -22,15 +37,13 @@ export default function PositionFilter({
 
   const initialSelected: RoleSelection = useMemo(() => {
     const selected = Filters.roles ?? [];
-    return Object.fromEntries(
-      Object.entries(ROLE_MAP).map(([ck, c]) => {
-        const inner = Object.fromEntries(
-          Object.keys(c.roles).map((rk) => [rk, selected.includes(rk)])
-        ) as Record<string, boolean>;
-        return [ck, { name: c.name, roles: inner }];
-      })
-    ) as RoleSelection;
+    return generateRoleSelection(selected, ROLE_MAP);
   }, [Filters.roles, ROLE_MAP]);
+
+  // 직군필터만 초기화
+  const emptySelected: RoleSelection = useMemo(() => {
+    return generateRoleSelection([], ROLE_MAP);
+  }, [ROLE_MAP]);
 
   const [selectedRoles, setSelectedRoles] =
     useState<RoleSelection>(initialSelected);
@@ -84,7 +97,7 @@ export default function PositionFilter({
   };
 
   const handleReset = () => {
-    setSelectedRoles(initialSelected);
+    setSelectedRoles(emptySelected);
   };
 
   const handleApply = () => {

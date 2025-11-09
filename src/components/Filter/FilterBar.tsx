@@ -49,7 +49,7 @@ export default function FilterBar({
 
   const handleGlobalReset = () => {
     const resetState: JobFilter = {
-      ...temp,
+      roles: [], // 직군필터도 초기화하게 추가
       isActive: undefined,
       domains: [],
       order: 0,
