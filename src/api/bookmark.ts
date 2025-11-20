@@ -40,20 +40,16 @@ export const removeBookmark = async (postId: string): Promise<void> => {
   });
 };
 
-
 // 찜한 게시물 목록 조회 (GET) API 함수
 export const getBookmarks = async (): Promise<JobListResponse> => {
   const token = localStorage.getItem('authToken');
   if (!token) throw new Error('인증 토큰이 없습니다. 로그인이 필요합니다.');
   try {
-    const response = await apiClient.get(
-      'api/post/bookmarks',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // JWT 헤더 설정
-        },
-      }
-    );
+    const response = await apiClient.get('api/post/bookmarks', {
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT 헤더 설정
+      },
+    });
 
     return response.data;
   } catch (error) {
@@ -61,15 +57,3 @@ export const getBookmarks = async (): Promise<JobListResponse> => {
     throw error;
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-

@@ -42,7 +42,6 @@ type RoleCategory = 'DEVELOPMENT' | 'DESIGN' | 'PLANNING' | 'MARKETING';
 
 export type RoleMapType = Record<RoleCategory, RoleGroup>;
 
-
 export type DeadlineInfo = {
   text: string;
   status: 'urgent' | 'permanent' | 'closed' | 'default';
