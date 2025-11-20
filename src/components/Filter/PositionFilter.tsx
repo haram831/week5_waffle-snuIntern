@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
-import type {
-  JobFilter,
-  RoleMapType,
-  RoleSelectionMap,
-} from '../../@types/job';
+import { useEffect, useMemo, useState } from 'react';
+import type { JobFilter, RoleMapType } from '../../@types/job.d.ts';
+import styles from './PositionFilter.module.css';
+
+type RoleSelection = Record<
+  string,
+  { name: string; roles: Record<string, boolean> }
+>;
 
 interface Props {
   Filters: JobFilter;
@@ -11,146 +13,202 @@ interface Props {
   onFilterChange: (newFilters: JobFilter) => void;
 }
 
+// initialSelected과 emptySelected 생성을 위한 헬퍼 함수
+const generateRoleSelection = (
+  roles: string[],
+  ROLE_MAP: RoleMapType
+): RoleSelection => {
+  return Object.fromEntries(
+    Object.entries(ROLE_MAP).map(([ck, c]) => {
+      const inner = Object.fromEntries(
+        Object.keys(c.roles).map((rk) => [rk, roles.includes(rk)])
+      ) as Record<string, boolean>;
+      return [ck, { name: c.name, roles: inner }];
+    })
+  ) as RoleSelection;
+};
+
 export default function PositionFilter({
   Filters,
   ROLE_MAP,
   onFilterChange,
 }: Props) {
-  const [isRoleFilterClicked, setIsRoleFilterClicked] = useState(false);
-  const [selectedRoles, setSelectedRoles] = useState<RoleSelectionMap>(() => {
-    const initial: RoleSelectionMap = Object.fromEntries(
-      Object.entries(ROLE_MAP).map(([categoryKey, categoryValue]) => [
-        categoryKey,
-        {
-          name: categoryValue.name,
-          roles: Object.fromEntries(
-            Object.keys(categoryValue.roles).map((roleKey) => [roleKey, true])
-          ) as Record<keyof typeof categoryValue.roles, boolean>,
-        },
-      ])
-    ) as RoleSelectionMap;
-    return initial;
-  });
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const activeRoles = Filters.roles;
-
-    const synced: RoleSelectionMap = Object.fromEntries(
-      Object.entries(ROLE_MAP).map(([categoryKey, categoryValue]) => {
-        const rolesBool = Object.fromEntries(
-          Object.keys(categoryValue.roles).map((roleKey) => [
-            roleKey,
-            activeRoles ? activeRoles.includes(roleKey) : true,
-          ])
-        ) as Record<keyof typeof categoryValue.roles, boolean>;
-
-        return [
-          categoryKey,
-          {
-            name: categoryValue.name,
-            roles: rolesBool,
-          },
-        ];
-      })
-    ) as RoleSelectionMap;
-
-    setSelectedRoles(synced);
+  const initialSelected: RoleSelection = useMemo(() => {
+    const selected = Filters.roles ?? [];
+    return generateRoleSelection(selected, ROLE_MAP);
   }, [Filters.roles, ROLE_MAP]);
 
-  const handleApply = () => {
-    const selectedRoleKeys = Object.values(selectedRoles).flatMap((category) =>
-      Object.entries(category.roles)
-        .filter(([_, isSelected]) => isSelected)
-        .map(([roleKey, _]) => roleKey)
-    );
+  // 직군필터만 초기화
+  const emptySelected: RoleSelection = useMemo(() => {
+    return generateRoleSelection([], ROLE_MAP);
+  }, [ROLE_MAP]);
 
-    onFilterChange({
-      ...Filters, // 기존 필터 유지
-      roles: selectedRoleKeys,
-      page: undefined, // 선택적으로 페이지 초기화
+  const [selectedRoles, setSelectedRoles] =
+    useState<RoleSelection>(initialSelected);
+
+  useEffect(() => setSelectedRoles(initialSelected), [initialSelected]);
+
+  const totalCount = useMemo(() => {
+    let cnt = 0;
+    Object.values(selectedRoles).forEach((cat) => {
+      cnt += Object.values(cat.roles).filter(Boolean).length;
+    });
+    return cnt;
+  }, [selectedRoles]);
+
+  const label = useMemo(
+    () => (totalCount > 0 ? `직군 필터 · ${totalCount}` : '직군 필터'),
+    [totalCount]
+  );
+
+  const toggleRole = (
+    categoryKey: string,
+    roleKey: string,
+    checked: boolean
+  ) => {
+    setSelectedRoles((prev) => {
+      const prevCategory = prev[categoryKey];
+      return {
+        ...prev,
+        [categoryKey]: {
+          ...prevCategory,
+          roles: { ...prevCategory.roles, [roleKey]: checked },
+        },
+      };
     });
   };
 
+  const toggleAllInCategory = (categoryKey: string, on: boolean) => {
+    setSelectedRoles((prev) => {
+      const prevCategory = prev[categoryKey];
+      const updated = Object.fromEntries(
+        Object.keys(prevCategory.roles).map((rk) => [rk, on])
+      ) as Record<string, boolean>;
+      return {
+        ...prev,
+        [categoryKey]: {
+          ...prevCategory,
+          roles: updated,
+        },
+      };
+    });
+  };
+
+  const handleReset = () => {
+    setSelectedRoles(emptySelected);
+  };
+
+  const handleApply = () => {
+    const picked = new Set<string>();
+    Object.values(selectedRoles).forEach((cat) => {
+      Object.entries(cat.roles).forEach(([rk, on]) => {
+        if (on) picked.add(rk);
+      });
+    });
+    onFilterChange({
+      ...Filters,
+      roles: Array.from(picked),
+      page: undefined,
+    });
+    setOpen(false);
+  };
+
   return (
-    <>
-      <div onClick={() => setIsRoleFilterClicked(!isRoleFilterClicked)}>
-        직군 필터
-      </div>
-      {isRoleFilterClicked && (
-        <div>
-          {Object.entries(ROLE_MAP).map(([categoryKey, category]) => (
-            <div key={categoryKey}>
-              <h4>{category.name}</h4>
-              {Object.entries(category.roles).map(([roleKey, roleValue]) => (
-                <label key={roleKey}>
-                  <input
-                    type="checkbox"
-                    value={roleKey}
-                    checked={
-                      !!selectedRoles?.[categoryKey as keyof RoleSelectionMap]
-                        ?.roles?.[roleKey as string]
-                    }
-                    onChange={(e) => {
-                      const checked = e.target.checked;
+    <div className={styles.wrap}>
+      <button
+        id="btn-role"
+        className={`${styles.mainBtn} ${open ? styles.active : ''}`}
+        aria-expanded={open}
+        aria-controls="panel-role"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {label}
+        <span className={styles.caret} />
+      </button>
 
-                      setSelectedRoles((prev) => {
-                        const categoryId =
-                          categoryKey as keyof RoleSelectionMap;
-                        const roleId = roleKey as keyof typeof category.roles;
+      {open && (
+        <div
+          id="panel-role"
+          className={styles.panel}
+          role="dialog"
+          aria-labelledby="btn-role"
+        >
+          <div className={styles.innerBox}>
+            {Object.entries(ROLE_MAP).map(([categoryKey, category]) => {
+              const allCount = Object.keys(category.roles).length;
+              const onCount = Object.values(
+                selectedRoles[categoryKey].roles
+              ).filter(Boolean).length;
+              const allOn = onCount === allCount && allCount > 0;
 
-                        // 이전 카테고리 상태 복사
-                        const prevCategory = prev[categoryId];
+              return (
+                <section className={styles.section} key={categoryKey}>
+                  <div className={styles.sectionHeader}>
+                    <h4 className={styles.heading}>{category.name}</h4>
+                    <div className={styles.sectionActions}>
+                      <button
+                        type="button"
+                        className={styles.smallGhost}
+                        onClick={() => toggleAllInCategory(categoryKey, true)}
+                      >
+                        전체선택
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.smallGhost}
+                        onClick={() => toggleAllInCategory(categoryKey, false)}
+                      >
+                        전체해제
+                      </button>
+                    </div>
+                  </div>
 
-                        // 새로운 roles 객체 생성 (immutability 유지)
-                        const updatedRoles = {
-                          ...prevCategory.roles,
-                          [roleId]: checked,
-                        };
+                  <label className={styles.item}>
+                    <input
+                      type="checkbox"
+                      checked={allOn}
+                      onChange={(e) =>
+                        toggleAllInCategory(categoryKey, e.target.checked)
+                      }
+                    />
+                    <span>전체</span>
+                  </label>
 
-                        // 전체 state 반환
-                        return {
-                          ...prev,
-                          [categoryId]: {
-                            ...prevCategory,
-                            roles: updatedRoles,
-                          },
-                        };
-                      });
-                    }}
-                  />
-                  {roleValue}
-                </label>
-              ))}
-            </div>
-          ))}
-          <button
-            onClick={() =>
-              setSelectedRoles(() => {
-                const reset: RoleSelectionMap = Object.fromEntries(
-                  Object.entries(ROLE_MAP).map(
-                    ([categoryKey, categoryValue]) => [
-                      categoryKey,
-                      {
-                        name: categoryValue.name,
-                        roles: Object.fromEntries(
-                          Object.keys(categoryValue.roles).map((roleKey) => [
-                            roleKey,
-                            false,
-                          ])
-                        ) as Record<keyof typeof categoryValue.roles, boolean>,
-                      },
-                    ]
-                  )
-                ) as RoleSelectionMap;
-                return reset;
-              })
-            }
-          >
-            초기화
-          </button>
-          <button onClick={handleApply}>적용</button>
+                  <div className={styles.grid}>
+                    {Object.entries(category.roles).map(
+                      ([roleKey, roleLabel]) => (
+                        <label className={styles.item} key={roleKey}>
+                          <input
+                            type="checkbox"
+                            checked={
+                              !!selectedRoles[categoryKey].roles[roleKey]
+                            }
+                            onChange={(e) =>
+                              toggleRole(categoryKey, roleKey, e.target.checked)
+                            }
+                          />
+                          <span>{roleLabel}</span>
+                        </label>
+                      )
+                    )}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+
+          <div className={styles.footer}>
+            <button className={styles.ghost} onClick={handleReset}>
+              초기화
+            </button>
+            <button className={styles.primary} onClick={handleApply}>
+              적용
+            </button>
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { JobFilter, JobInfo } from '../@types/job.d.ts';
 import { addBookmark, removeBookmark } from '../api/bookmark.ts';
 import { fetchJobList } from '../api/job.ts';
-import Filter from './Filter';
+import Filter from './Filter/Filter';
 import JobCard from './Job/JobCard.tsx';
 import styles from './JobContainer.module.css';
 import Pagination from './Pagination';
