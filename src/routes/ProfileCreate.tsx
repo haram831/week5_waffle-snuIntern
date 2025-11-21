@@ -26,14 +26,12 @@ const buildCvKey = (fileName: string) => {
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
   const dateStr = `${yyyy}${mm}${dd}`;
-
   const rand = randomString(10);
   return `static/private/CV/${rand}_${dateStr}/${fileName}`;
 };
 
 const convertEnrollYear = (twoDigits: string): number => {
   const num = Number(twoDigits);
-  // 예시 스펙: 19 -> 2019, 09 -> 2009, 85 -> 1985
   if (num <= 24) return 2000 + num;
   return 1900 + num;
 };
@@ -95,7 +93,7 @@ const ProfileCreate = () => {
       return;
     }
 
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
     if (size > maxSize) {
       setErrors((prev) => ({
         ...prev,
@@ -154,19 +152,19 @@ const ProfileCreate = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-  
+
     const enrollYearFull = convertEnrollYear(enrollYear);
     const departmentStr = departments
       .map((d) => d.trim())
       .filter((d) => d !== '')
       .join(',');
-  
+
     const payload = {
       enrollYear: enrollYearFull,
       department: departmentStr,
       cvKey,
     };
-  
+
     try {
       setIsSubmitting(true);
       await putApplicantMe(payload);
@@ -265,7 +263,7 @@ const ProfileCreate = () => {
               </p>
             )}
           </div>
-          
+
           <div className={styles.field}>
             <label className={styles.label}>
               이력서 (CV) <span className={styles.required}>*</span>
@@ -332,4 +330,3 @@ const ProfileCreate = () => {
 };
 
 export default ProfileCreate;
-
