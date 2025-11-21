@@ -1,3 +1,10 @@
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://api-internhasha.wafflestudio.com',
+  timeout: 5000,
+});
+
 export type ApplicantProfilePayload = {
   enrollYear: number;
   department: string;
@@ -19,6 +26,7 @@ type ServerApplicantPayload = {
 
 export const putApplicantMe = async (payload: ApplicantProfilePayload) => {
   const token = localStorage.getItem('authToken');
+  if (!token) throw new Error('인증 토큰이 없습니다. 로그인이 필요합니다.');
 
   const serverPayload: ServerApplicantPayload = {
     enrollYear: payload.enrollYear,
@@ -33,30 +41,12 @@ export const putApplicantMe = async (payload: ApplicantProfilePayload) => {
     links: [],
   };
 
-  const res = await fetch('/api/applicant/me', {
-    method: 'PUT',
+  const response = await apiClient.put('/api/applicant/me', serverPayload, {
     headers: {
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify(serverPayload),
   });
 
-  if (!res.ok) {
-    const message = await res.text().catch(() => '');
-    console.error('putApplicantMe error', res.status, message);
-    throw new Error('failed to update applicant profile');
-  }
-
-  const contentType = res.headers.get('content-type') ?? '';
-
-  if (contentType.includes('application/json')) {
-    try {
-      return await res.json();
-    } catch {
-      return null;
-    }
-  }
-
-  return null;
+  return response.data ?? null;
 };
