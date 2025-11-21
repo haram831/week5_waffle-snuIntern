@@ -4,7 +4,7 @@ import styles from './Header.module.css';
 
 function Header() {
   const navigate = useNavigate();
-  const { isLoggedIn, username, logout } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore();
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
@@ -15,14 +15,16 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      {/* 스누인턴 클릭하면 홈페이지로 이동 */}
       <Link to="/" className={styles.title}>
         스누인턴
       </Link>
+
       <div className={styles.menu}>
         {isLoggedIn ? (
           <>
-            <span>{username}님</span>
+            <Link to="/mypage" className={styles.link}>
+              마이페이지
+            </Link>
             <Link to="/" onClick={handleLogout} className={styles.link}>
               로그아웃
             </Link>
