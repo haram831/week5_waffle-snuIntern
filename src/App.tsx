@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from './components/Layout';
 import Home from './routes/Home';
 import Login from './routes/Login';
-import Signup from './routes/Signup';
 import MyPage from './routes/MyPage';
 import ProfileCreate from './routes/ProfileCreate';
+import Signup from './routes/Signup';
+import Layout from './components/Layout';
 import './index.css';
 
 const App = () => {
@@ -13,10 +13,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          <Route path="login/" element={<Login />} />
+          <Route path="signup/" element={<Signup />} />
           <Route path="mypage" element={<MyPage />} />
-          <Route path="profile/create" element={<ProfileCreate />} />
+          <Route path="mypage/info" element={<MyPage />} />
+          <Route path="mypage/bookmarks" element={<MyPage />} />
+          <Route
+            path="/mypage/profile-create"
+            element={<ProfileCreate />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
