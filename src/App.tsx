@@ -2,9 +2,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './routes/Home';
 import Login from './routes/Login';
-import Signup from './routes/Signup';
 import MyPage from './routes/MyPage';
 import ProfileCreate from './routes/ProfileCreate';
+import Signup from './routes/Signup';
 import './index.css';
 
 const App = () => {
