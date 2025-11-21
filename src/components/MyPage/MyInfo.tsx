@@ -1,30 +1,24 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './MyInfo.module.css';
 
 const MyInfo = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>내 정보</h2>
+
       <div className={styles.profileBox}>
-        <div className={styles.row}>
-          <span className={styles.label}>이름</span>
-          <span className={styles.value}>이름</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.label}>이메일</span>
-          <span className={styles.value}>email@example.com</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.label}>학번</span>
-          <span className={styles.value}>00학번</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.label}>학과</span>
-          <span className={styles.value}>학과 정보</span>
-        </div>
+        <p>아직 작성된 프로필이 없어요.</p>
       </div>
+
       <div className={styles.buttonRow}>
-        <button type="button" className={styles.primaryButton}>
-          내 프로필 생성
+        <button
+          type="button"
+          className={styles.primaryButton}
+          onClick={() => navigate('/profile/create')}
+        >
+          내 정보 생성
         </button>
       </div>
     </div>
