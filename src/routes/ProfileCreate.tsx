@@ -123,12 +123,10 @@ const ProfileCreate = () => {
   const validate = (): boolean => {
     const newErrors: Errors = {};
 
-    // 학번: 두 자리 정수
     if (!/^\d{2}$/.test(enrollYear)) {
       newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
     }
 
-    // 학과: 주전공 필수, 복수전공 최대 6, 중복 X, 빈 값 X
     const trimmed = departments.map((d) => d.trim());
     if (!trimmed[0]) {
       newErrors.department = '주전공 학과명을 작성해주세요.';
@@ -145,7 +143,6 @@ const ProfileCreate = () => {
       }
     }
 
-    // CV
     if (!cvKey) {
       newErrors.cv = '이력서(PDF)를 업로드해주세요.';
     }
@@ -157,37 +154,24 @@ const ProfileCreate = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
+  
     const enrollYearFull = convertEnrollYear(enrollYear);
     const departmentStr = departments
       .map((d) => d.trim())
       .filter((d) => d !== '')
       .join(',');
-
+  
     const payload = {
       enrollYear: enrollYearFull,
       department: departmentStr,
       cvKey,
     };
-
+  
     try {
       setIsSubmitting(true);
-
-      const res = await fetch('/api/applicant/me', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`;
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to save profile');
-      }
-
+      await putApplicantMe(payload);
       alert('프로필이 저장되었습니다.');
-      // window.location.href = '/mypage?tab=info';
+      window.location.href = '/mypage?tab=info';
     } catch (err) {
       console.error(err);
       alert('프로필 저장에 실패했습니다. 다시 시도해주세요.');
@@ -210,7 +194,6 @@ const ProfileCreate = () => {
         <p className={styles.formDesc}>아래 항목은 필수로 작성해주세요.</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          {/* 학번 */}
           <div className={styles.field}>
             <label className={styles.label}>
               학번 <span className={styles.required}>*</span>
@@ -233,7 +216,6 @@ const ProfileCreate = () => {
             )}
           </div>
 
-          {/* 학과 */}
           <div className={styles.field}>
             <label className={styles.label}>
               학과 <span className={styles.required}>*</span>
@@ -283,8 +265,7 @@ const ProfileCreate = () => {
               </p>
             )}
           </div>
-
-          {/* 이력서(CV) */}
+          
           <div className={styles.field}>
             <label className={styles.label}>
               이력서 (CV) <span className={styles.required}>*</span>
