@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Signup from './routes/Signup';
+import MyPage from './routes/MyPage';
 import './index.css';
 
 const App = () => {
@@ -11,8 +12,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="login/" element={<Login />} />
-          <Route path="signup/" element={<Signup />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
