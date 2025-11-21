@@ -8,7 +8,7 @@ const MyBookMarks = () => {
   const [bookMarkList, setBookMarkList] = useState<BookMark[]>([]);
   const getDeadlineInfo = (endDate: string | null): DeadlineInfo => {
     if (endDate === null) {
-      return { text: '상시 채용', status: 'default' };
+      return { text: '상시모집', status: 'default' };
     }
     const now = new Date();
     const endDateObj = new Date(endDate);
@@ -34,23 +34,33 @@ const MyBookMarks = () => {
   }, []);
 
   return (
-    <div>
-      <h2>My Bookmarks</h2>
-      <ul>
-        {bookMarkList.map((bookmark) => (
-          <li key={bookmark.id}>
-            <div>
-              <BsBookmarkFill />
-              <h2>{bookmark.companyName}</h2>
-              <p>{bookmark.positionTitle}</p>
-              <div
-                className={`${styles.jobCardDeadline} ${styles[getDeadlineInfo(bookmark.employmentEndDate).status]}`}
-              >
-                {getDeadlineInfo(bookmark.employmentEndDate).text}
+    <div className={styles.container}>
+      <ul className={styles.list}>
+        {bookMarkList.map((bookmark) => {
+          const { text, status } = getDeadlineInfo(bookmark.employmentEndDate);
+
+          return (
+            <li key={bookmark.id} className={styles.card}>
+              <div className={styles.leftGroup}>
+                <div className={styles.iconWrapper}>
+                  <BsBookmarkFill />
+                </div>
+                <span className={styles.companyName}>
+                  {bookmark.companyName}
+                </span>
               </div>
-            </div>
-          </li>
-        ))}
+
+              <div className={styles.rightGroup}>
+                <span className={styles.positionTitle}>
+                  {bookmark.positionTitle}
+                </span>
+                <span className={`${styles.deadline} ${styles[status]}`}>
+                  {text}
+                </span>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

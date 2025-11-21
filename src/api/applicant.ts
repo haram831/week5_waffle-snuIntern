@@ -1,29 +1,30 @@
 import axios from 'axios';
+import type {
+  ApplicantProfile,
+  ApplicantProfilePayload,
+  ServerApplicantPayload,
+} from '../@types/applicant';
 
 const apiClient = axios.create({
   baseURL: 'https://api-internhasha.wafflestudio.com',
   timeout: 5000,
 });
 
-export type ApplicantProfilePayload = {
-  enrollYear: number;
-  department: string;
-  cvKey: string;
+// 프로필 정보 조회 (GET) API 함수
+export const getApplicantProfile = async (): Promise<ApplicantProfile> => {
+  const token = localStorage.getItem('authToken');
+  if (!token) throw new Error('인증 토큰이 없습니다. 로그인이 필요합니다.');
+
+  const response = await apiClient.get<ApplicantProfile>('/api/applicant/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };
 
-type ServerApplicantPayload = {
-  enrollYear: number;
-  department: string;
-  positions: string[];
-  slogan: string;
-  explanation: string;
-  stacks: string[];
-  imageKey: string;
-  cvKey: string;
-  portfolioKey: string;
-  links: { description: string; link: string }[];
-};
-
+// 프로필 정보 수정 (PUT) API 함수
 export const putApplicantMe = async (payload: ApplicantProfilePayload) => {
   const token = localStorage.getItem('authToken');
   if (!token) throw new Error('인증 토큰이 없습니다. 로그인이 필요합니다.');

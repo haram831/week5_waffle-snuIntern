@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { putApplicantMe } from '../api/applicant';
-import type { ApplicantProfilePayload } from '../api/applicant';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { ApplicantProfilePayload } from '../@types/applicant';
+import { getApplicantProfile, putApplicantMe } from '../api/applicant';
 import styles from './ProfileCreate.module.css';
 
 type Errors = {
@@ -40,6 +40,10 @@ const convertEnrollYear = (twoDigits: string): number => {
 const ProfileCreate = () => {
   const navigate = useNavigate();
 
+  // 현재 URL이 생성인지 수정인지 확인
+  const location = useLocation();
+  const isEditMode = location.pathname.includes('edit-profile');
+
   const [enrollYear, setEnrollYear] = useState('');
   const [departments, setDepartments] = useState<string[]>(['']);
   const [cvFileName, setCvFileName] = useState('');
@@ -48,6 +52,33 @@ const ProfileCreate = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // 수정이면 기존 데이터 불러오기
+  useEffect(() => {
+    if (!isEditMode) return;
+
+    const loadProfile = async () => {
+      try {
+        const profile = await getApplicantProfile();
+        const yearStr = String(profile.enrollYear).slice(-2);
+        setEnrollYear(yearStr);
+
+        if (profile.department) {
+          setDepartments(profile.department.split(','));
+        }
+
+        if (profile.cvKey) {
+          setCvKey(profile.cvKey);
+          const extractedName = profile.cvKey.split('/').pop() || '기존 이력서';
+          setCvFileName(extractedName);
+        }
+      } catch (error) {
+        console.error('프로필 정보를 불러오는데 실패했습니다.', error);
+      }
+    };
+
+    loadProfile();
+  }, [isEditMode]);
 
   const handleEnrollYearChange = (value: string) => {
     if (value.length > 2) return;
@@ -169,7 +200,7 @@ const ProfileCreate = () => {
       setIsSubmitting(true);
       await putApplicantMe(payload);
       alert('프로필이 저장되었습니다.');
-      navigate('/mypage?tab=info');
+      navigate('/mypage?tab=PROFILE'); // 경로 수정
     } catch {
       alert('프로필 저장에 실패했습니다. 다시 시도해주세요.');
     } finally {
@@ -180,7 +211,10 @@ const ProfileCreate = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
-        <h1 className={styles.title}>프로필 생성</h1>
+        {/* [수정] 모드에 따라 제목 변경 */}
+        <h1 className={styles.title}>
+          {isEditMode ? '프로필 수정' : '프로필 생성'}
+        </h1>
         <p className={styles.subtitle} />
       </div>
 
@@ -195,7 +229,7 @@ const ProfileCreate = () => {
             </label>
             <div className={styles.inline}>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shortInput}`}
                 value={enrollYear}
                 onChange={(e) => handleEnrollYearChange(e.target.value)}
                 placeholder="25"
@@ -315,7 +349,7 @@ const ProfileCreate = () => {
             <button
               type="button"
               className={styles.back}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/mypage?tab=PROFILE')} // 경로 수정
             >
               뒤로가기
             </button>

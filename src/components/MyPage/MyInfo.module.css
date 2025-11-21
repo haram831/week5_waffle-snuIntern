@@ -1,49 +1,75 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.loading,
+.error {
+  padding: 60px 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #888;
 }
 
-.title {
-  font-size: 20px;
+.error {
+  color: #e53e3e;
+}
+
+.emptyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.emptyContainer h2 {
+  font-size: 1.6rem;
   font-weight: 700;
+  color: #000;
+  margin: 0 0 12px 0;
 }
 
-.profileBox {
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-  padding: 16px 20px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.emptyContainer p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 32px;
 }
 
-.row {
-  display: flex;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.label {
-  width: 60px;
-  color: #777777;
-}
-
-.value {
-  color: #222222;
-}
-
-.buttonRow {
-  margin-top: 12px;
-}
-
-.primaryButton {
-  padding: 10px 18px;
-  border-radius: 6px;
+.createButtonMain {
+  padding: 14px 32px;
+  background-color: #343a40;
+  color: #fff;
   border: none;
-  background-color: #222222;
-  color: #ffffff;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.createButtonMain:hover {
+  background-color: #23272b;
+}
+
+.profileContainer {
+  padding: 20px 0;
+  border: none;
+  background-color: transparent;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #212529;
+  margin: 0 0 12px 0;
+}
+
+.email {
+  font-size: 1.1rem;
+  color: #495057;
+  margin: 0 0 8px 0;
+}
+
+.info {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 0;
 }

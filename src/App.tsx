@@ -16,7 +16,10 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="mypage" element={<MyPage />} />
-          <Route path="profile/create" element={<ProfileCreate />} />
+
+          {/* 프로필 생성 및 수정 경로 통합 */}
+          <Route path="mypage/create-profile" element={<ProfileCreate />} />
+          <Route path="mypage/edit-profile" element={<ProfileCreate />} />
         </Route>
       </Routes>
     </BrowserRouter>
