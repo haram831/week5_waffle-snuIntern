@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { putApplicantMe } from '../api/applicant';
 import styles from './ProfileCreate.module.css';
+import type { ApplicantProfilePayload } from '../api/applicant';
 
 type Errors = {
   enrollYear?: string;
