@@ -155,14 +155,14 @@ const ProfileCreate = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    const payload = {
-      enrollYear: convertEnrollYear(enrollYear),
-      department: departments
-        .map((d) => d.trim())
-        .filter((d) => d !== '')
-        .join(','),
-      cvKey,
-    };
+  const payload: ApplicantProfilePayload = {
+    enrollYear: convertEnrollYear(enrollYear),
+    department: departments
+      .map((d) => d.trim())
+      .filter((d) => d !== '')
+      .join(','),
+    cvKey,
+  };
 
     try {
       setIsSubmitting(true);
