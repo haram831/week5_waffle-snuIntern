@@ -1,33 +1,30 @@
 import { useState } from 'react';
-import styles from './MyPage.module.css';
 import MyBookMarks from '../components/MyPage/MyBookMarks';
 import MyInfo from '../components/MyPage/MyInfo';
+import styles from './MyPage.module.css';
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState<'bookmark' | 'info'>('bookmark');
+  const [currentTab, setCurrentTab] = useState<'info' | 'bookmarks'>('info');
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>마이페이지</h1>
-
-      <div className={styles.tabs}>
+      <div className={styles.sidebar}>
         <button
-          className={`${styles.tab} ${activeTab === 'bookmark' ? styles.active : ''}`}
-          onClick={() => setActiveTab('bookmark')}
-        >
-          관심공고
-        </button>
-        <button
-          className={`${styles.tab} ${activeTab === 'info' ? styles.active : ''}`}
-          onClick={() => setActiveTab('info')}
+          className={currentTab === 'info' ? styles.active : ''}
+          onClick={() => setCurrentTab('info')}
         >
           내 정보
+        </button>
+        <button
+          className={currentTab === 'bookmarks' ? styles.active : ''}
+          onClick={() => setCurrentTab('bookmarks')}
+        >
+          내 북마크
         </button>
       </div>
 
       <div className={styles.content}>
-        {activeTab === 'bookmark' && <MyBookMarks />}
-        {activeTab === 'info' && <MyInfo />}
+        {currentTab === 'info' ? <MyInfo /> : <MyBookMarks />}
       </div>
     </div>
   );
