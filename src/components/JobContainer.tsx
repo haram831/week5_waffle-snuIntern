@@ -134,7 +134,6 @@ export default function JobContainer() {
           />
         ))}
       </div>
-
       <Pagination
         pageCount={totalPages}
         currentPage={currentPage}

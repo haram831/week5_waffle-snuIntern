@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { JobListResponse } from '../@types/job';
 
 const apiClient = axios.create({
   baseURL: 'https://api-internhasha.wafflestudio.com',
@@ -37,4 +38,22 @@ export const removeBookmark = async (postId: string): Promise<void> => {
       Authorization: `Bearer ${token}`, // JWT 헤더 설정
     },
   });
+};
+
+// 찜한 게시물 목록 조회 (GET) API 함수
+export const getBookmarks = async (): Promise<JobListResponse> => {
+  const token = localStorage.getItem('authToken');
+  if (!token) throw new Error('인증 토큰이 없습니다. 로그인이 필요합니다.');
+  try {
+    const response = await apiClient.get('api/post/bookmarks', {
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT 헤더 설정
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('찜한 게시물 목록을 가져오는 중 오류 발생:', error);
+    throw error;
+  }
 };

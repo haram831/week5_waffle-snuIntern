@@ -1,0 +1,11 @@
+.jobCardDeadline {
+  font-weight: 500;
+  font-size: 0.9rem;
+  align-self: flex-end;
+}
+.closed {
+  color: #e53e3e;
+}
+.default {
+  color: #096dd9;
+}
