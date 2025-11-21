@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { putApplicantMe } from '../api/applicant';
+import { useNavigate } from 'react-router-dom';
 import styles from './ProfileCreate.module.css';
 
 type Errors = {
@@ -45,6 +46,7 @@ const ProfileCreate = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const handleEnrollYearChange = (value: string) => {
     if (value.length > 2) return;
@@ -79,15 +81,11 @@ const ProfileCreate = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const name = file.name;
     const size = file.size;
 
     if (!name.toLowerCase().endsWith('.pdf')) {
-      setErrors((prev) => ({
-        ...prev,
-        cv: 'PDF 파일만 업로드 가능합니다.',
-      }));
+      setErrors((prev) => ({ ...prev, cv: 'PDF 파일만 업로드 가능합니다.' }));
       setCvFileName('');
       setCvKey('');
       return;
@@ -95,10 +93,7 @@ const ProfileCreate = () => {
 
     const maxSize = 5 * 1024 * 1024;
     if (size > maxSize) {
-      setErrors((prev) => ({
-        ...prev,
-        cv: '5MB 이하의 PDF 파일만 업로드 가능합니다.',
-      }));
+      setErrors((prev) => ({ ...prev, cv: '5MB 이하의 PDF 파일만 업로드 가능합니다.' }));
       setCvFileName('');
       setCvKey('');
       return;
@@ -113,37 +108,27 @@ const ProfileCreate = () => {
     setCvFileName('');
     setCvKey('');
     setErrors((prev) => ({ ...prev, cv: undefined }));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const validate = (): boolean => {
     const newErrors: Errors = {};
 
-    if (!/^\d{2}$/.test(enrollYear)) {
-      newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
-    }
+    if (!/^\d{2}$/.test(enrollYear)) newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
 
     const trimmed = departments.map((d) => d.trim());
-    if (!trimmed[0]) {
-      newErrors.department = '주전공 학과명을 작성해주세요.';
-    } else {
+    if (!trimmed[0]) newErrors.department = '주전공 학과명을 작성해주세요.';
+    else {
       const nonEmpty = trimmed.filter((d) => d !== '');
-      if (nonEmpty.length > 1 + MAX_SUB_MAJORS) {
-        newErrors.department =
-          '다전공은 총 6개 이하로 중복되지 않게 입력해주세요.';
-      } else {
+      if (nonEmpty.length > 1 + MAX_SUB_MAJORS)
+        newErrors.department = '다전공은 총 6개 이하로 중복되지 않게 입력해주세요.';
+      else {
         const set = new Set(nonEmpty);
-        if (set.size !== nonEmpty.length) {
-          newErrors.department = '학과를 중복하여 작성하지 말아주세요.';
-        }
+        if (set.size !== nonEmpty.length) newErrors.department = '학과를 중복하여 작성하지 말아주세요.';
       }
     }
 
-    if (!cvKey) {
-      newErrors.cv = '이력서(PDF)를 업로드해주세요.';
-    }
+    if (!cvKey) newErrors.cv = '이력서(PDF)를 업로드해주세요.';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -169,9 +154,8 @@ const ProfileCreate = () => {
       setIsSubmitting(true);
       await putApplicantMe(payload);
       alert('프로필이 저장되었습니다.');
-      window.location.href = '/mypage?tab=info';
-    } catch (err) {
-      console.error(err);
+      navigate('/mypage?tab=info');
+    } catch {
       alert('프로필 저장에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSubmitting(false);
@@ -182,8 +166,7 @@ const ProfileCreate = () => {
     <div className={styles.wrapper}>
       <div className={styles.left}>
         <h1 className={styles.title}>프로필 생성</h1>
-        <p className={styles.subtitle}>
-        </p>
+        <p className={styles.subtitle}></p>
       </div>
 
       <div className={styles.right}>
@@ -207,9 +190,7 @@ const ProfileCreate = () => {
             {errors.enrollYear ? (
               <p className={styles.error}>{errors.enrollYear}</p>
             ) : (
-              <p className={styles.helper}>
-                두 자리 수 숫자로 작성해주세요. (e.g. 25)
-              </p>
+              <p className={styles.helper}>두 자리 수 숫자로 작성해주세요. (e.g. 25)</p>
             )}
           </div>
 
@@ -223,9 +204,7 @@ const ProfileCreate = () => {
                 <input
                   className={styles.input}
                   value={dept}
-                  onChange={(e) =>
-                    handleDepartmentChange(index, e.target.value)
-                  }
+                  onChange={(e) => handleDepartmentChange(index, e.target.value)}
                   placeholder={
                     index === 0
                       ? '주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부)'
@@ -257,8 +236,7 @@ const ProfileCreate = () => {
               <p className={styles.error}>{errors.department}</p>
             ) : (
               <p className={styles.helper}>
-                주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게
-                입력해주세요.
+                주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게 입력해주세요.
               </p>
             )}
           </div>
@@ -277,21 +255,13 @@ const ProfileCreate = () => {
             />
 
             {!cvFileName ? (
-              <button
-                type="button"
-                className={styles.cvUpload}
-                onClick={handleFileClick}
-              >
+              <button type="button" className={styles.cvUpload} onClick={handleFileClick}>
                 PDF 파일만 업로드 가능해요.
               </button>
             ) : (
               <div className={styles.cvInfoRow}>
                 <div className={styles.cvFileName}>{cvFileName}</div>
-                <button
-                  type="button"
-                  className={styles.deleteButton}
-                  onClick={clearFile}
-                >
+                <button type="button" className={styles.deleteButton} onClick={clearFile}>
                   삭제
                 </button>
               </div>
@@ -300,25 +270,15 @@ const ProfileCreate = () => {
             {errors.cv ? (
               <p className={styles.error}>{errors.cv}</p>
             ) : (
-              <p className={styles.helper}>
-                5MB 이하의 PDF 파일을 업로드해주세요.
-              </p>
+              <p className={styles.helper}>5MB 이하의 PDF 파일을 업로드해주세요.</p>
             )}
           </div>
 
           <div className={styles.actions}>
-            <button
-              type="submit"
-              className={styles.submit}
-              disabled={isSubmitting}
-            >
+            <button type="submit" className={styles.submit} disabled={isSubmitting}>
               {isSubmitting ? '저장 중...' : '저장'}
             </button>
-            <button
-              type="button"
-              className={styles.back}
-              onClick={() => window.history.back()}
-            >
+            <button type="button" className={styles.back} onClick={() => navigate(-1)}>
               뒤로가기
             </button>
           </div>
