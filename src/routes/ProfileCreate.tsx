@@ -12,10 +12,9 @@ type Errors = {
 const MAX_SUB_MAJORS = 6;
 
 const randomString = (length: number) => {
-  const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  for (let i = 0; i < length; i += 1) {
+  for (let i = 0; i < length; i++) {
     result += chars[Math.floor(Math.random() * chars.length)];
   }
   return result;
@@ -33,11 +32,11 @@ const buildCvKey = (fileName: string) => {
 
 const convertEnrollYear = (twoDigits: string): number => {
   const num = Number(twoDigits);
-  if (num <= 24) return 2000 + num;
-  return 1900 + num;
+  return num <= 24 ? 2000 + num : 1900 + num;
 };
 
 const ProfileCreate = () => {
+  const navigate = useNavigate();
   const [enrollYear, setEnrollYear] = useState('');
   const [departments, setDepartments] = useState<string[]>(['']);
   const [cvFileName, setCvFileName] = useState('');
@@ -46,32 +45,31 @@ const ProfileCreate = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const navigate = useNavigate();
 
   const handleEnrollYearChange = (value: string) => {
     if (value.length > 2) return;
     if (value !== '' && !/^\d+$/.test(value)) return;
     setEnrollYear(value);
-    setErrors((prev) => ({ ...prev, enrollYear: undefined }));
+    setErrors(prev => ({ ...prev, enrollYear: undefined }));
   };
 
   const handleDepartmentChange = (index: number, value: string) => {
-    setDepartments((prev) => {
+    setDepartments(prev => {
       const next = [...prev];
       next[index] = value;
       return next;
     });
-    setErrors((prev) => ({ ...prev, department: undefined }));
+    setErrors(prev => ({ ...prev, department: undefined }));
   };
 
   const addDepartment = () => {
     if (departments.length >= 1 + MAX_SUB_MAJORS) return;
-    setDepartments((prev) => [...prev, '']);
+    setDepartments(prev => [...prev, '']);
   };
 
   const removeDepartment = (index: number) => {
     if (index === 0) return;
-    setDepartments((prev) => prev.filter((_, i) => i !== index));
+    setDepartments(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleFileClick = () => {
@@ -81,11 +79,15 @@ const ProfileCreate = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const name = file.name;
     const size = file.size;
 
     if (!name.toLowerCase().endsWith('.pdf')) {
-      setErrors((prev) => ({ ...prev, cv: 'PDF 파일만 업로드 가능합니다.' }));
+      setErrors(prev => ({
+        ...prev,
+        cv: 'PDF 파일만 업로드 가능합니다.',
+      }));
       setCvFileName('');
       setCvKey('');
       return;
@@ -93,13 +95,16 @@ const ProfileCreate = () => {
 
     const maxSize = 5 * 1024 * 1024;
     if (size > maxSize) {
-      setErrors((prev) => ({ ...prev, cv: '5MB 이하의 PDF 파일만 업로드 가능합니다.' }));
+      setErrors(prev => ({
+        ...prev,
+        cv: '5MB 이하의 PDF 파일만 업로드 가능합니다.',
+      }));
       setCvFileName('');
       setCvKey('');
       return;
     }
 
-    setErrors((prev) => ({ ...prev, cv: undefined }));
+    setErrors(prev => ({ ...prev, cv: undefined }));
     setCvFileName(name);
     setCvKey(buildCvKey(name));
   };
@@ -107,28 +112,37 @@ const ProfileCreate = () => {
   const clearFile = () => {
     setCvFileName('');
     setCvKey('');
-    setErrors((prev) => ({ ...prev, cv: undefined }));
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    setErrors(prev => ({ ...prev, cv: undefined }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
-  const validate = (): boolean => {
+  const validate = () => {
     const newErrors: Errors = {};
 
-    if (!/^\d{2}$/.test(enrollYear)) newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
+    if (!/^\d{2}$/.test(enrollYear)) {
+      newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
+    }
 
-    const trimmed = departments.map((d) => d.trim());
-    if (!trimmed[0]) newErrors.department = '주전공 학과명을 작성해주세요.';
-    else {
-      const nonEmpty = trimmed.filter((d) => d !== '');
-      if (nonEmpty.length > 1 + MAX_SUB_MAJORS)
+    const trimmed = departments.map(d => d.trim());
+    if (!trimmed[0]) {
+      newErrors.department = '주전공 학과명을 작성해주세요.';
+    } else {
+      const nonEmpty = trimmed.filter(d => d !== '');
+      if (nonEmpty.length > 1 + MAX_SUB_MAJORS) {
         newErrors.department = '다전공은 총 6개 이하로 중복되지 않게 입력해주세요.';
-      else {
+      } else {
         const set = new Set(nonEmpty);
-        if (set.size !== nonEmpty.length) newErrors.department = '학과를 중복하여 작성하지 말아주세요.';
+        if (set.size !== nonEmpty.length) {
+          newErrors.department = '학과를 중복하여 작성하지 말아주세요.';
+        }
       }
     }
 
-    if (!cvKey) newErrors.cv = '이력서(PDF)를 업로드해주세요.';
+    if (!cvKey) {
+      newErrors.cv = '이력서(PDF)를 업로드해주세요.';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -138,15 +152,12 @@ const ProfileCreate = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    const enrollYearFull = convertEnrollYear(enrollYear);
-    const departmentStr = departments
-      .map((d) => d.trim())
-      .filter((d) => d !== '')
-      .join(',');
-
     const payload = {
-      enrollYear: enrollYearFull,
-      department: departmentStr,
+      enrollYear: convertEnrollYear(enrollYear),
+      department: departments
+        .map(d => d.trim())
+        .filter(d => d !== '')
+        .join(','),
       cvKey,
     };
 
@@ -182,7 +193,7 @@ const ProfileCreate = () => {
               <input
                 className={styles.input}
                 value={enrollYear}
-                onChange={(e) => handleEnrollYearChange(e.target.value)}
+                onChange={e => handleEnrollYearChange(e.target.value)}
                 placeholder="25"
               />
               <span className={styles.inlineSuffix}>학번</span>
@@ -204,11 +215,11 @@ const ProfileCreate = () => {
                 <input
                   className={styles.input}
                   value={dept}
-                  onChange={(e) => handleDepartmentChange(index, e.target.value)}
+                  onChange={e => handleDepartmentChange(index, e.target.value)}
                   placeholder={
                     index === 0
                       ? '주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부)'
-                      : '다전공 학과명을 입력해주세요. (예시: 컴퓨터공학부, 경제학부 등)'
+                      : '다전공 학과명을 입력해주세요.'
                   }
                 />
                 {index > 0 && (
