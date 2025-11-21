@@ -1,4 +1,3 @@
-
 export type ApplicantProfilePayload = {
   enrollYear: number;
   department: string;
