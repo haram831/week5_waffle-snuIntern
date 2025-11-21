@@ -12,9 +12,10 @@ type Errors = {
 const MAX_SUB_MAJORS = 6;
 
 const randomString = (length: number) => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length; i += 1) {
     result += chars[Math.floor(Math.random() * chars.length)];
   }
   return result;
@@ -37,6 +38,7 @@ const convertEnrollYear = (twoDigits: string): number => {
 
 const ProfileCreate = () => {
   const navigate = useNavigate();
+
   const [enrollYear, setEnrollYear] = useState('');
   const [departments, setDepartments] = useState<string[]>(['']);
   const [cvFileName, setCvFileName] = useState('');
@@ -50,26 +52,26 @@ const ProfileCreate = () => {
     if (value.length > 2) return;
     if (value !== '' && !/^\d+$/.test(value)) return;
     setEnrollYear(value);
-    setErrors(prev => ({ ...prev, enrollYear: undefined }));
+    setErrors((prev) => ({ ...prev, enrollYear: undefined }));
   };
 
   const handleDepartmentChange = (index: number, value: string) => {
-    setDepartments(prev => {
+    setDepartments((prev) => {
       const next = [...prev];
       next[index] = value;
       return next;
     });
-    setErrors(prev => ({ ...prev, department: undefined }));
+    setErrors((prev) => ({ ...prev, department: undefined }));
   };
 
   const addDepartment = () => {
     if (departments.length >= 1 + MAX_SUB_MAJORS) return;
-    setDepartments(prev => [...prev, '']);
+    setDepartments((prev) => [...prev, '']);
   };
 
   const removeDepartment = (index: number) => {
     if (index === 0) return;
-    setDepartments(prev => prev.filter((_, i) => i !== index));
+    setDepartments((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleFileClick = () => {
@@ -84,7 +86,7 @@ const ProfileCreate = () => {
     const size = file.size;
 
     if (!name.toLowerCase().endsWith('.pdf')) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
         cv: 'PDF 파일만 업로드 가능합니다.',
       }));
@@ -95,7 +97,7 @@ const ProfileCreate = () => {
 
     const maxSize = 5 * 1024 * 1024;
     if (size > maxSize) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
         cv: '5MB 이하의 PDF 파일만 업로드 가능합니다.',
       }));
@@ -104,7 +106,7 @@ const ProfileCreate = () => {
       return;
     }
 
-    setErrors(prev => ({ ...prev, cv: undefined }));
+    setErrors((prev) => ({ ...prev, cv: undefined }));
     setCvFileName(name);
     setCvKey(buildCvKey(name));
   };
@@ -112,7 +114,7 @@ const ProfileCreate = () => {
   const clearFile = () => {
     setCvFileName('');
     setCvKey('');
-    setErrors(prev => ({ ...prev, cv: undefined }));
+    setErrors((prev) => ({ ...prev, cv: undefined }));
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -125,13 +127,14 @@ const ProfileCreate = () => {
       newErrors.enrollYear = '두 자리 수 숫자로 작성해주세요. (e.g. 25)';
     }
 
-    const trimmed = departments.map(d => d.trim());
+    const trimmed = departments.map((d) => d.trim());
     if (!trimmed[0]) {
       newErrors.department = '주전공 학과명을 작성해주세요.';
     } else {
-      const nonEmpty = trimmed.filter(d => d !== '');
+      const nonEmpty = trimmed.filter((d) => d !== '');
       if (nonEmpty.length > 1 + MAX_SUB_MAJORS) {
-        newErrors.department = '다전공은 총 6개 이하로 중복되지 않게 입력해주세요.';
+        newErrors.department =
+          '다전공은 총 6개 이하로 중복되지 않게 입력해주세요.';
       } else {
         const set = new Set(nonEmpty);
         if (set.size !== nonEmpty.length) {
@@ -155,8 +158,8 @@ const ProfileCreate = () => {
     const payload = {
       enrollYear: convertEnrollYear(enrollYear),
       department: departments
-        .map(d => d.trim())
-        .filter(d => d !== '')
+        .map((d) => d.trim())
+        .filter((d) => d !== '')
         .join(','),
       cvKey,
     };
@@ -177,7 +180,7 @@ const ProfileCreate = () => {
     <div className={styles.wrapper}>
       <div className={styles.left}>
         <h1 className={styles.title}>프로필 생성</h1>
-        <p className={styles.subtitle}></p>
+        <p className={styles.subtitle} />
       </div>
 
       <div className={styles.right}>
@@ -193,7 +196,7 @@ const ProfileCreate = () => {
               <input
                 className={styles.input}
                 value={enrollYear}
-                onChange={e => handleEnrollYearChange(e.target.value)}
+                onChange={(e) => handleEnrollYearChange(e.target.value)}
                 placeholder="25"
               />
               <span className={styles.inlineSuffix}>학번</span>
@@ -201,7 +204,9 @@ const ProfileCreate = () => {
             {errors.enrollYear ? (
               <p className={styles.error}>{errors.enrollYear}</p>
             ) : (
-              <p className={styles.helper}>두 자리 수 숫자로 작성해주세요. (e.g. 25)</p>
+              <p className={styles.helper}>
+                두 자리 수 숫자로 작성해주세요. (e.g. 25)
+              </p>
             )}
           </div>
 
@@ -215,7 +220,9 @@ const ProfileCreate = () => {
                 <input
                   className={styles.input}
                   value={dept}
-                  onChange={e => handleDepartmentChange(index, e.target.value)}
+                  onChange={(e) =>
+                    handleDepartmentChange(index, e.target.value)
+                  }
                   placeholder={
                     index === 0
                       ? '주전공 학과명을 입력해주세요. (예시: 컴퓨터공학부)'
@@ -247,7 +254,8 @@ const ProfileCreate = () => {
               <p className={styles.error}>{errors.department}</p>
             ) : (
               <p className={styles.helper}>
-                주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게 입력해주세요.
+                주전공은 필수 작성이며, 다전공은 총 6개 이하로 중복되지 않게
+                입력해주세요.
               </p>
             )}
           </div>
@@ -266,13 +274,21 @@ const ProfileCreate = () => {
             />
 
             {!cvFileName ? (
-              <button type="button" className={styles.cvUpload} onClick={handleFileClick}>
+              <button
+                type="button"
+                className={styles.cvUpload}
+                onClick={handleFileClick}
+              >
                 PDF 파일만 업로드 가능해요.
               </button>
             ) : (
               <div className={styles.cvInfoRow}>
                 <div className={styles.cvFileName}>{cvFileName}</div>
-                <button type="button" className={styles.deleteButton} onClick={clearFile}>
+                <button
+                  type="button"
+                  className={styles.deleteButton}
+                  onClick={clearFile}
+                >
                   삭제
                 </button>
               </div>
@@ -281,15 +297,25 @@ const ProfileCreate = () => {
             {errors.cv ? (
               <p className={styles.error}>{errors.cv}</p>
             ) : (
-              <p className={styles.helper}>5MB 이하의 PDF 파일을 업로드해주세요.</p>
+              <p className={styles.helper}>
+                5MB 이하의 PDF 파일을 업로드해주세요.
+              </p>
             )}
           </div>
 
           <div className={styles.actions}>
-            <button type="submit" className={styles.submit} disabled={isSubmitting}>
+            <button
+              type="submit"
+              className={styles.submit}
+              disabled={isSubmitting}
+            >
               {isSubmitting ? '저장 중...' : '저장'}
             </button>
-            <button type="button" className={styles.back} onClick={() => navigate(-1)}>
+            <button
+              type="button"
+              className={styles.back}
+              onClick={() => navigate(-1)}
+            >
               뒤로가기
             </button>
           </div>
