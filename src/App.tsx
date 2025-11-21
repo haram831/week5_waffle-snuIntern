@@ -4,7 +4,7 @@ import Home from './routes/Home';
 import Login from './routes/Login';
 import Signup from './routes/Signup';
 import MyPage from './routes/MyPage';
-import ProfileCreate from './routes/ProfileCreate'; // 추가
+import ProfileCreate from './routes/ProfileCreate';
 import './index.css';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="mypage" element={<MyPage />} />
-          <Route path="profile/create" element={<ProfileCreate />} /> {/* 추가 */}
+          <Route path="profile/create" element={<ProfileCreate />} />
         </Route>
       </Routes>
     </BrowserRouter>
