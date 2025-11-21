@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { putApplicantMe } from '../api/applicant';
 import { useNavigate } from 'react-router-dom';
+import { putApplicantMe } from '../api/applicant';
 import styles from './ProfileCreate.module.css';
 
 type Errors = {
