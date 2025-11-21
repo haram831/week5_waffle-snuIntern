@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
-import styles from './ProfileCreate.module.css';
+import { useRef, useState } from 'react';
 import { putApplicantMe } from '../api/applicant';
+import styles from './ProfileCreate.module.css';
 
 type Errors = {
   enrollYear?: string;
