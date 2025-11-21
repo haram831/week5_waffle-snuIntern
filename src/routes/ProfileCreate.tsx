@@ -183,7 +183,6 @@ const ProfileCreate = () => {
       <div className={styles.left}>
         <h1 className={styles.title}>프로필 생성</h1>
         <p className={styles.subtitle}>
-          학번, 학과, 이력서를 필수로 작성할 수 있어야 합니다.
         </p>
       </div>
 
